@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('partials/meta'); %>
+    <style>
+
+    </style>
+</head>
+
+<body>
+  <%- include('partials/navbar'); %>
+
+  <div>
+    <div class="terminal-alert" id="responseBox" style="text-align: center; max-width: 500px; margin: 0 auto; margin-top: 70px; visibility: hidden;"></div>
+
+    <div id="fileForm" class="centered" style="display: grid;">
+      <img src="/images/upllogo.png" style="width: 300px; margin-bottom: 30px;">
+      <p style="font-size: 30px; margin: 0 auto; margin-bottom: 30px;">Upload Neko!</p>
+
+      <div class="btn-group" style="margin: 0 auto;">
+        <select onchange="reDefOpt();" class="btn btn-default btn-ghost" id="select" style="width: 120px; height: 40px;">
+          <option>SFW</option>
+          <option>NSFW</option>
+        </select>
+        <div id="zone" class="zone btn btn-primary btn-ghost" style="width: 155px; height: 40px;">File here!</div>
+      </div>
+
+    </div>
+  </div>
+</body>
+
+
+<script>
+  function reDefOpt() {
+    zone.options.headers.type = $("#select option:selected").text().toLowerCase()
+  }
+
+  
+  var zone = new Dropzone("#zone", { 
+    url: "/api/upload",
+    paramName: "uploadFile",
+
+    previewTemplate: `<div id="tpl"><div class="dz-preview dz-processing dz-image-preview dz-complete"></div></div>`,
+    timeout: 0,
+
+    headers: {
+        'type': $("#select option:selected").text().toLowerCase()
+    },
+
+    init: function() {
+      this.on("success", function(data) {        
+        unHide("success")
+        let response = JSON.parse(data.xhr.response)
+        document.getElementById('responseBox').innerHTML = `File was successfully uploaded`
+      }),
+
+      this.on("error", function(data) {
+        unHide("error")
+        document.getElementById('responseBox').innerHTML = `${data.xhr.response}`
+      })
+    }
+
+  })
+
+  function unHide(resType) {
+    let resBox = document.getElementById("responseBox")
+
+    if (resType == "success") {
+      resBox.classList.add("terminal-alert-primary")
+      resBox.style.visibility = "visible"
+      deleteBox("success")
+    } else {
+      resBox.classList.add("terminal-alert-error")
+      resBox.style.visibility = "visible"
+      deleteBox("error")
+    }
+
+    function deleteBox(resType) {
+      setTimeout(function() { 
+        resBox.style.visibility = "hidden"
+        if (resType == "success") {
+          resBox.classList.remove("terminal-alert-primary")
+        } else {
+          resBox.classList.remove("terminal-alert-error")
+        }
+      }, 5000)
+    }
+  }
+</script>
+
+</html>
