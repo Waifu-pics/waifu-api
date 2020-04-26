@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../partials/meta'); %>
+</head>
+
+<body>
+    <%- include('../partials/navbar'); %>
+    <div class="terminal-alert terminal-alert-error" id="responseBox" style="text-align: center; max-width: 500px; margin: 0 auto; margin-top: 70px; visibility: hidden;"></div>
+    <div class="centered">
+        <div style="width: 400px; align-items: center; text-align: center;">
+            <fieldset>
+                <legend>ADMIN LOGIN</legend>
+                <input id="usernameField" style="max-width: 300px; text-align: center;" placeholder="Username" type="text">
+                <input id="passwordField" style="max-width: 300px; text-align: center; margin-top: 10px;" placeholder="Password" type="password">
+                <button class="btn btn-primary btn-ghost" style="margin-top: 10px;" onclick="tryLogin()">Login</button>
+            </fieldset>
+        </div>     
+    </div>
+    <script>
+        if (localStorage.getItem("token") != null) {
+            axios({
+                method: 'post',
+                url: '/api/admin/auth/verify',
+                data: {
+                    'token': localStorage.getItem("token")
+                }
+            }).then(function () {
+                window.location.replace("/admin/dash")
+            }).catch(function () {
+                localStorage.removeItem("token")
+            })
+        }
+
+        function tryLogin() {
+            axios({
+                method: 'post',
+                url: '/api/admin/auth/login',
+                data: {
+                    'username': document.getElementById("usernameField").value,
+                    'password': document.getElementById("passwordField").value
+                }
+            }).then(function (data) {
+                localStorage.setItem('token', data.data)
+                window.location.replace("/admin/dash")
+            }).catch(function (data) {
+                let resBox = document.getElementById("responseBox")
+                resBox.style.visibility = "visible"
+
+                resBox.innerHTML = data.response.data
+                
+                setTimeout(function() { 
+                    resBox.style.visibility = "hidden"
+                }, 5000)
+            })
+        }
+    </script>
+</body>
+
+</html>

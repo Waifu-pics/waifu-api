@@ -53,7 +53,7 @@ module.exports = ({ db, app, config, s3 }) => {
                     s3.upload(params, async function(s3Err) {
                         if (s3Err) throw s3Err
 
-                        await Uploads.insertOne({ file, md5, type, "verified": true })
+                        await Uploads.insertOne({ file, md5, type, "verified": false })
                         fs.unlinkSync(config.uploadDir + file)
                         return res.json({
                             'url': config.url + file
