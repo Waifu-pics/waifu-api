@@ -14,6 +14,9 @@ module.exports = ({ db, app, config, s3 }) => {
         
         next()
     }
+    
+    // Nginx
+    app.set('trust proxy', 1);
 
     // Rate limit middleware
     const limiter = rateLimit({
