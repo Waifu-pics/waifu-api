@@ -22,7 +22,7 @@
         <p>1. Upload to the correct category</p>
         <p>2. All uploads are sent to the approval area after they are uploaded, they will be reviewed before going public</p>
         <p>3. You may only upload 15 images per 10 minutes, if you try more you will be rate limited, this is to prevent spam</p>
-        <p>4. No clearly underage appearing characters, some are allowed but do not take it too far</p>
+        <p>4. No clearly underage appearing characters(nsfw), some are allowed but do not take it too far</p>
         <p>5. No illegal content, do not post anything that is deemed illegal by the US</p>
       </div>
     
@@ -30,12 +30,13 @@
 
     <div id="fileForm" class="centered" style="display: grid;">
       <img src="/images/upllogo.png" style="width: 300px; margin-bottom: 30px;">
-      <p style="font-size: 30px; margin: 0 auto; margin-bottom: 30px;">Upload Neko!</p>
+      <p style="font-size: 30px; margin: 0 auto; margin-bottom: 30px;">Upload Image!</p>
 
       <div class="btn-group" style="margin: 0 auto;">
         <select onchange="reDefOpt();" class="btn btn-default btn-ghost" id="select" style="width: 120px; height: 40px;">
-          <option>SFW</option>
-          <option>NSFW</option>
+          <% endpoints.map((endpoint)=>{%>
+            <option><%= endpoint.toUpperCase() %></option>
+          <%}) %>
         </select>
         <div id="zone" class="zone btn btn-primary btn-ghost" style="width: 155px; height: 40px;">File here!</div>
       </div>

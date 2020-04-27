@@ -25,29 +25,37 @@ module.exports = ({ db, app, s3 }) => {
 
     // * FRONTEND
 
-    // Grid Frontend
+    let gridPoint = JSON.parse(JSON.stringify(config.endpoints)).splice(1, config.endpoints.length)
+    console.log(gridPoint);
+
+    // Grid Frontend for SFW
     app.get('/', async(req, rep) => {
         // let collectionSize = await db.collection("uploads").countDocuments({"type": "sfw", "verified": true})
         rep.renderMin('grid', { data: await db.collection("uploads").aggregate([{ $match: {"type": "sfw", "verified": true} }, { $sample: { size: 100 } }]).toArray(), config: config })
     })
 
-    app.get('/nsfw', async(req, rep) => {
-        // let collectionSize = await db.collection("uploads").countDocuments({"type": "nsfw", "verified": true})
-        rep.renderMin('grid', { data: await db.collection("uploads").aggregate([{ $match: {"type": "nsfw", "verified": true} }, { $sample: { size: 100 } }]).toArray(), config: config })
+    config.endpoints.map(endpoint => {
+        app.get(`/${endpoint}`, async(req, rep) => {
+            rep.renderMin('grid', { data: await db.collection("uploads").aggregate([{ $match: {"type": endpoint, "verified": true} }, { $sample: { size: 100 } }]).toArray(), config: config })
+        })
     })
 
     // User Frontend
 
     app.get('/docs', async(req, rep) => {
-        rep.renderMin('docs')
+        rep.renderMin('docs', { endpoints : config.endpoints })
     })
 
     app.get('/upload', async(req, rep) => {
-        rep.renderMin('upload', { maxUploadSize : config.maxUploadSize })
+        rep.renderMin('upload', { maxUploadSize : config.maxUploadSize, endpoints : config.endpoints })
     })
 
     app.get('/admin/login', async(req, rep) => {
         rep.renderMin('admin/login')
+    })
+
+    app.get('/admin', async(req, rep) => {
+        rep.redirect('/admin/login')
     })
 
     app.get('/admin/dash', async(req, rep) => {

@@ -11,8 +11,13 @@
     <div class="centered">
         <div style="width: 500px; text-align: center;" class="terminal-card">
             <header>API Docs</header>
-            <div>Hello and welcome to nekos.vip!<br>This is the api/site for high quality neko images.<br>Below is some information on how to use the API!</div>
-            <div style="margin-bottom: 20px;"><br>There are two endpoints for images.<br><br><b>https://nekos.vip/api/img/sfw</b><br><b>https://nekos.vip/api/img/nsfw</b></div>
+            <div>Hello and welcome to waifu.pics!<br>This is the api/site for high quality waifu images.<br>Below is some information on how to use the API!</div>
+            <div style="margin-bottom: 20px;"><br>Below are the image endpoints.<br>
+                <% endpoints.map((endpoint)=>{%>
+                    <br><b>https://waifu.pics/api/img/<%= endpoint %></b>
+                <%}) %>
+            
+            </div>
         </div>
     </div>
 </body>

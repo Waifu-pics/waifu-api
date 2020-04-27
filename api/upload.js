@@ -44,7 +44,7 @@ module.exports = ({ db, app, config, s3 }) => {
 
         if (!type) {
             return res.status(400).send("Invalid type provided!")
-        } else if(['sfw', 'nsfw'].includes(type)) {            
+        } else if(config.endpoints.includes(type)) {            
             const Uploads = db.collection('uploads')
             const Admins = db.collection('admins')
         if (req.files.uploadFile == null || Object.keys(req.files.uploadFile).length === 0) {
