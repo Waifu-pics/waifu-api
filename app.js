@@ -5,6 +5,7 @@ const config = require('./config')
 const bodyParser = require('body-parser')
 const minifyHTML = require('express-minify-html')
 const AWS = require('aws-sdk')
+const rateLimit = require("express-rate-limit")
 
 app.use(express.json())
 app.use(bodyParser.json());
@@ -26,6 +27,8 @@ mongo.init().then(db => {
 
     app.use('/', express.static('./public')) // Public files
     require('./router')({ db, app, s3 }) // Router
+
+    // Rate limit Upload endpoint
 })
 
 app.listen(config.port)

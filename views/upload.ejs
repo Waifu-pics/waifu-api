@@ -3,9 +3,7 @@
 
 <head>
     <%- include('partials/meta'); %>
-    <style>
-
-    </style>
+    <link rel="stylesheet" href="/css/upload.css">
 </head>
 
 <body>
@@ -13,6 +11,21 @@
 
   <div>
     <div class="terminal-alert" id="responseBox" style="text-align: center; max-width: 500px; margin: 0 auto; margin-top: 70px; visibility: hidden;"></div>
+
+    <div id="guidelineModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p style="font-size: 20px;">Upload Information</p>
+        <p>1. Upload to the correct category</p>
+        <p>2. All uploads are sent to the approval area after they are uploaded, they will be reviewed before going public</p>
+        <p>3. You may only upload 15 images per 10 minutes, if you try more you will be rate limited, this is to prevent spam</p>
+        <p>4. No clearly underage appearing characters, some are allowed but do not take it too far</p>
+        <p>5. No illegal content, do not post anything that is deemed illegal by the US</p>
+      </div>
+    
+    </div>
 
     <div id="fileForm" class="centered" style="display: grid;">
       <img src="/images/upllogo.png" style="width: 300px; margin-bottom: 30px;">
@@ -25,68 +38,10 @@
         </select>
         <div id="zone" class="zone btn btn-primary btn-ghost" style="width: 155px; height: 40px;">File here!</div>
       </div>
-
+      <a id="guideBTN" style="margin: 0 auto; margin-top: 10px;">Guidelines</a>
     </div>
   </div>
+  <script src="/scripts/upload.js"></script>
 </body>
-
-
-<script>
-  function reDefOpt() {
-    zone.options.headers.type = $("#select option:selected").text().toLowerCase()
-  }
-
-  
-  var zone = new Dropzone("#zone", { 
-    url: "/api/upload",
-    paramName: "uploadFile",
-
-    previewTemplate: `<div id="tpl"><div class="dz-preview dz-processing dz-image-preview dz-complete"></div></div>`,
-    timeout: 0,
-
-    headers: {
-        'type': $("#select option:selected").text().toLowerCase()
-    },
-
-    init: function() {
-      this.on("success", function(data) {        
-        unHide("success")
-        let response = JSON.parse(data.xhr.response)
-        document.getElementById('responseBox').innerHTML = `File was successfully uploaded`
-      }),
-
-      this.on("error", function(data) {
-        unHide("error")
-        document.getElementById('responseBox').innerHTML = `${data.xhr.response}`
-      })
-    }
-
-  })
-
-  function unHide(resType) {
-    let resBox = document.getElementById("responseBox")
-
-    if (resType == "success") {
-      resBox.classList.add("terminal-alert-primary")
-      resBox.style.visibility = "visible"
-      deleteBox("success")
-    } else {
-      resBox.classList.add("terminal-alert-error")
-      resBox.style.visibility = "visible"
-      deleteBox("error")
-    }
-
-    function deleteBox(resType) {
-      setTimeout(function() { 
-        resBox.style.visibility = "hidden"
-        if (resType == "success") {
-          resBox.classList.remove("terminal-alert-primary")
-        } else {
-          resBox.classList.remove("terminal-alert-error")
-        }
-      }, 5000)
-    }
-  }
-</script>
 
 </html>
