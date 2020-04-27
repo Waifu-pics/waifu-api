@@ -13,13 +13,34 @@
             <img class="lazy" data-src="<%= config.url + image.file %>" alt="">
         <%}) %>
     </section>
+
+    <div id="relArea" style="text-align: center; margin: 0 auto; visibility: hidden;">
+        <div class="terminal-alert terminal-alert-error bigErr" style="margin: auto; margin-top: 30px;">You have reached 100 results, please reload!</div>
+        <button class="btn btn-primary btn-ghost" id="relBtn" style="margin-top: 20px; margin-bottom: 40px;">RELOAD</button>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@15.1.1/dist/lazyload.min.js"></script>
     <script>
+        // Initialize lazyload
         (function() {
             var ll = new LazyLoad({
                 elements_selector: ".lazy",
             })
         })()
+
+        // Scroll to top on load
+        $(this).scrollTop(0)
+
+        setTimeout(function() {
+            document.getElementById("relArea").style.visibility = "visible"
+        }, 1000)
+        
+
+        $(document).on('click','#relBtn', function() {
+            window.location.replace("/");
+        })
+
+
     </script>
 </body>
 

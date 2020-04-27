@@ -1,5 +1,5 @@
 body, html {
-    background-color: white;
+  background-color: var(--background-color);
 }
 
 #photos {
@@ -46,3 +46,13 @@ body, html {
    column-count:         1;
    }
  }
+
+ .bigErr {
+  width: 450px;
+ }
+
+ @media only screen and (max-width: 450px) {
+  .bigErr {
+    width: 100%;
+  }
+}

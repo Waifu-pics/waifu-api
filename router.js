@@ -27,13 +27,13 @@ module.exports = ({ db, app, s3 }) => {
 
     // Grid Frontend
     app.get('/', async(req, rep) => {
-        let collectionSize = await db.collection("uploads").countDocuments({"type": "sfw", "verified": true})
-        rep.renderMin('grid', { data: await db.collection("uploads").aggregate([{ $match: {"type": "sfw", "verified": true} }, { $sample: { size: collectionSize } }]).toArray(), config: config })
+        // let collectionSize = await db.collection("uploads").countDocuments({"type": "sfw", "verified": true})
+        rep.renderMin('grid', { data: await db.collection("uploads").aggregate([{ $match: {"type": "sfw", "verified": true} }, { $sample: { size: 100 } }]).toArray(), config: config })
     })
 
     app.get('/nsfw', async(req, rep) => {
-        let collectionSize = await db.collection("uploads").countDocuments({"type": "nsfw", "verified": true})
-        rep.renderMin('grid', { data: await db.collection("uploads").aggregate([{ $match: {"type": "nsfw", "verified": true} }, { $sample: { size: collectionSize } }]).toArray(), config: config })
+        // let collectionSize = await db.collection("uploads").countDocuments({"type": "nsfw", "verified": true})
+        rep.renderMin('grid', { data: await db.collection("uploads").aggregate([{ $match: {"type": "nsfw", "verified": true} }, { $sample: { size: 100 } }]).toArray(), config: config })
     })
 
     // User Frontend
