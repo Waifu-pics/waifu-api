@@ -7,6 +7,8 @@ if (localStorage.getItem("token") != null) {
         }
     }).then(function () {
         zone.options.headers.token = localStorage.getItem("token")
+        document.getElementById("adminBox").style.visibility = "visible"
+        document.getElementById("responseBox").style.marginTop = "20px"
     }).catch(function () {
         localStorage.removeItem("token")
     })

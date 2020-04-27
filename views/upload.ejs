@@ -10,8 +10,9 @@
   <%- include('partials/navbar'); %>
 
   <div>
-    <div class="terminal-alert" id="responseBox" style="text-align: center; max-width: 500px; margin: 0 auto; margin-top: 70px; visibility: hidden;"></div>
-
+    <div class="terminal-alert terminal-alert-primary" id="adminBox" style="text-align: center; max-width: 500px; margin: 0 auto; margin-top: 70px; visibility: hidden;">You are in admin mode, make sure you upload to the correct category. Ratelimiting is disabled for you!</div>
+    <div class="terminal-alert" id="responseBox" style="text-align: center; max-width: 500px; margin: 0 auto; margin-top: -70px; visibility: hidden;"></div>
+  
     <div id="guidelineModal" class="modal">
 
       <!-- Modal content -->
@@ -40,7 +41,9 @@
       </div>
       <a id="guideBTN" style="margin: 0 auto; margin-top: 10px;">Guidelines</a>
     </div>
+
   </div>
+  
   <script src="/scripts/upload.js"></script>
 </body>
 
