@@ -24,8 +24,6 @@ const s3 = new AWS.S3({
 mongo.init().then(db => {
     app.use('/', express.static('./public')) // Public files
     require('./router')({ db, app, s3 }) // Router
-
-    // Rate limit Upload endpoint
 })
 
 app.listen(config.port)
