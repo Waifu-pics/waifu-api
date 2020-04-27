@@ -22,9 +22,6 @@ const s3 = new AWS.S3({
 })
 
 mongo.init().then(db => {
-    // Serve uploaded files
-    app.use('/', express.static(config.uploadDir))
-
     app.use('/', express.static('./public')) // Public files
     require('./router')({ db, app, s3 }) // Router
 
