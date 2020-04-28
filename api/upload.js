@@ -47,6 +47,11 @@ module.exports = ({ db, app, config, s3 }) => {
         } else if(config.endpoints.includes(type)) {            
             const Uploads = db.collection('uploads')
             const Admins = db.collection('admins')
+
+        if (!req.files) {
+            return res.status(400).send('File not uploaded!')
+        }
+        
         if (req.files.uploadFile == null || Object.keys(req.files.uploadFile).length === 0) {
             return res.status(400).send('File not uploaded!')
         } else {
