@@ -23,20 +23,39 @@ module.exports = ({ db, app, s3 }) => {
         })
     })
 
-    // * FRONTEND
+    // Frontend endpoint
+    config.endpoints.map(endpoint => {
+        app.post(`/api/${endpoint}`, async(req, res) => {
+            const body = req.body
+            let arrEx = []
+            if (body.exclude) {
+                arrEx = body.exclude
+            }
 
-    let gridPoint = JSON.parse(JSON.stringify(config.endpoints)).splice(1, config.endpoints.length)
-    console.log(gridPoint);
+            let data = await db.collection("uploads").aggregate([{ $match: { "type": endpoint, "verified": true, file: { $nin: arrEx } } }, { $sample: { size: 30 } }]).toArray()
+
+            data = data.map((image) => {
+                return image.file
+            })
+
+            res.json({
+                'data': data
+            })
+        })
+    })
+
+    // * FRONTEND
 
     // Grid Frontend for SFW
     app.get('/', async(req, rep) => {
         // let collectionSize = await db.collection("uploads").countDocuments({"type": "sfw", "verified": true})
-        rep.renderMin('grid', { data: await db.collection("uploads").aggregate([{ $match: {"type": "sfw", "verified": true} }, { $sample: { size: 100 } }]).toArray(), config: config })
+        const endpoint = "sfw"
+        rep.renderMin('grid', { config: config, endpoint: endpoint })
     })
 
     config.endpoints.map(endpoint => {
         app.get(`/${endpoint}`, async(req, rep) => {
-            rep.renderMin('grid', { data: await db.collection("uploads").aggregate([{ $match: {"type": endpoint, "verified": true} }, { $sample: { size: 100 } }]).toArray(), config: config })
+            rep.renderMin('grid', { config: config, endpoint: endpoint })
         })
     })
 
