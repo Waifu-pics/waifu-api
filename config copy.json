@@ -1,0 +1,5 @@
+{
+    "DB": "mongodb://127.0.0.1/",
+    "URL": "http://localhost:8081",
+    "PORT": "8081"
+}
