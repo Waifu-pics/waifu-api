@@ -1,10 +1,12 @@
 package app
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"go.mongodb.org/mongo-driver/bson"
 	"waifu.pics/util"
 )
 
@@ -13,21 +15,21 @@ type PageData struct {
 	Links []string `json:"exclude"`
 }
 
-type DB struct {
-	db *util.Mongo
-}
-
-func (glob *DB) getTest(w http.ResponseWriter, r *http.Request) {
+func getTest(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Testing")
-	// glob.db.Database.Collection("test").InsertOne(glob.db.Context, bson.D{
-	// 	{Key: "hi", Value: "HELO"},
+
+	util.Database.Collection("test").InsertOne(context.TODO(), bson.D{
+		{Key: "test", Value: "test"},
+	})
+
+	// route.mongo.Collection("test").InsertOne(ctx, bson.D{
+	// 	{Key: "test", Value: "test"},
 	// })
 }
 
 // Router : Test
-func Router(mux *mux.Router, db *util.Mongo, config util.Config) *mux.Router {
-	glob := DB{db: db}
-	mux.HandleFunc("/api/test", glob.getTest).Methods("GET")
+func Router(mux *mux.Router, config util.Config) *mux.Router {
+	mux.HandleFunc("/api/test", getTest).Methods("GET")
 
 	return mux
 }
