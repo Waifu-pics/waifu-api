@@ -9,9 +9,14 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+type Mongo struct {
+	Database *mongo.Database
+	Context  context.Context
+}
+
 // DbDriver : Mongo Driver
-func DbDriver(url string) *mongo.Client {
-	client, err := mongo.NewClient(options.Client().ApplyURI(url))
+func DbDriver(config Config) Mongo {
+	client, err := mongo.NewClient(options.Client().ApplyURI(config.DB.URL))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -23,7 +28,7 @@ func DbDriver(url string) *mongo.Client {
 		log.Fatal(err)
 	}
 
-	defer client.Disconnect(ctx)
+	database := client.Database(config.DB.DBNAME)
 
-	return client
+	return Mongo{database, ctx}
 }
