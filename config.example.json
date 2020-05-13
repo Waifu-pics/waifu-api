@@ -1,5 +1,9 @@
 {
-    "DB": "mongodb://127.0.0.1/",
+    "DB": {
+        "URL": "mongodb://127.0.0.1/",
+        "DBNAME": "database" 
+    },
+
     "URL": "http://localhost:8081",
     "PORT": "8081"
 }
