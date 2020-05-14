@@ -1,9 +1,14 @@
 {
+    "URL": "http://localhost:8080/",
+    "PORT": "8080",
+
     "DB": {
         "URL": "mongodb://127.0.0.1/",
         "DBNAME": "database" 
     },
 
-    "URL": "http://localhost:8081",
-    "PORT": "8081"
+    "ENDPOINTS": [
+        "sfw",
+        "nsfw"
+    ]
 }

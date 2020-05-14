@@ -8,12 +8,13 @@ import (
 
 // Config : Template for JSON Config
 type Config struct {
-	DB struct {
+	URL  string `json:"URL"`
+	PORT string `json:"PORT"`
+	DB   struct {
 		URL    string `json:"URL"`
 		DBNAME string `json:"DBNAME"`
 	} `json:"DB"`
-	URL  string `json:"URL"`
-	PORT string `json:"PORT"`
+	ENDPOINTS []string `json:"ENDPOINTS"`
 }
 
 // LoadConfig : Load config from external json

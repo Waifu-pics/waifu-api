@@ -1,35 +1,21 @@
 package app
 
 import (
-	"context"
-	"fmt"
-	"net/http"
-
 	"github.com/gorilla/mux"
-	"go.mongodb.org/mongo-driver/bson"
+	"waifu.pics/app/API"
 	"waifu.pics/util"
 )
 
-// PageData : Sorting data type
-type PageData struct {
-	Links []string `json:"exclude"`
-}
-
-func getTest(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Testing")
-
-	util.Database.Collection("test").InsertOne(context.TODO(), bson.D{
-		{Key: "test", Value: "test"},
-	})
-
-	// route.mongo.Collection("test").InsertOne(ctx, bson.D{
-	// 	{Key: "test", Value: "test"},
-	// })
-}
-
-// Router : Test
+// Router :
 func Router(mux *mux.Router, config util.Config) *mux.Router {
-	mux.HandleFunc("/api/test", getTest).Methods("GET")
+	// endPoints := []string{"nsfw", "sfw"}
+	endPoints := config.ENDPOINTS
+
+	for _, endP := range endPoints {
+		endpoint := endP // Evaluates instantly
+
+		API.SingleImagePoint(mux, endpoint, config)
+	}
 
 	return mux
 }
