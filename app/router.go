@@ -19,10 +19,12 @@ func Router(mux *mux.Router, config util.Config) *mux.Router {
 		Grid(mux, endpoint, config)
 	}
 
+	// Rest of front end
 	Docs(mux, config)
 
-	// Static file server
+	// Other important things
 	mux.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("external/static/"))))
+	mux.NotFoundHandler = mux.NewRoute().HandlerFunc(Error404).GetHandler()
 
 	return mux
 }

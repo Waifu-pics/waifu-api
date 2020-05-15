@@ -26,11 +26,13 @@ func Grid(mux *mux.Router, endpoint string, conf util.Config) {
 	if endpoint == "sfw" {
 		mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 			t.ExecuteTemplate(w, "grid", p)
+			defer r.Body.Close()
 		}).Methods("GET")
 	}
 
 	mux.HandleFunc("/"+endpoint, func(w http.ResponseWriter, r *http.Request) {
 		t.ExecuteTemplate(w, "grid", p)
+		defer r.Body.Close()
 	}).Methods("GET")
 }
 
@@ -49,5 +51,17 @@ func Docs(mux *mux.Router, conf util.Config) {
 			"external/templates/partials/navbar.html"))
 
 		t.ExecuteTemplate(w, "docs", data)
+		defer r.Body.Close()
 	})
+}
+
+// Error404 : Not found error handler
+func Error404(w http.ResponseWriter, r *http.Request) {
+	t := template.Must(template.ParseFiles(
+		"external/templates/404.html",
+		"external/templates/partials/meta.html",
+		"external/templates/partials/navbar.html"))
+
+	t.ExecuteTemplate(w, "404", nil)
+	defer r.Body.Close()
 }

@@ -50,35 +50,39 @@ func ManyImagePoint(mux *mux.Router, endpoint string, conf util.Config) {
 
 		json.NewDecoder(r.Body).Decode(&excludeDat)
 
+		// Turn the exclude slice into bson.A interface
 		result := bson.A{}
-		for _, e := range excludeDat.Exclude {
-			result = append(result, e)
+		for _, image := range excludeDat.Exclude {
+			result = append(result, image)
 		}
 
+		// Run mongo query
 		matchStage := bson.D{{"$match", bson.D{{"type", endpoint}, {"verified", true}, {"file", bson.D{{"$nin", result}}}}}}
-		sampleStage := bson.D{{"$sample", bson.D{{"size", 100}}}}
-
+		sampleStage := bson.D{{"$sample", bson.D{{"size", 30}}}}
 		mongoRes, err := util.Database.Collection("uploads").Aggregate(context.TODO(), mongo.Pipeline{matchStage, sampleStage})
 
+		// Response non json struct
 		var dumpRes []struct {
-			URL string `bson:"file,omitempty"`
+			URLs string `bson:"file,omitempty"`
 		}
 
+		// Dump the query to dumpRes
 		if err = mongoRes.All(context.TODO(), &dumpRes); err != nil {
 			panic(err)
 		}
 
+		// Response json struct
 		type sendRes struct {
 			Data []string `json:"data"`
 		}
 
+		// Add all URLs to new var
 		var urls = make([]string, len(dumpRes))
 		for i, d := range dumpRes {
-			urls[i] = d.URL
+			urls[i] = d.URLs
 		}
 
 		response, _ := json.Marshal(sendRes{Data: urls})
-
 		fmt.Fprintf(w, string(response))
 
 		defer r.Body.Close()
