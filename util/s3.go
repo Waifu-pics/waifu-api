@@ -3,7 +3,6 @@ package util
 import (
 	"bytes"
 	"fmt"
-	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -18,7 +17,7 @@ func InitS3(Config Config) {
 	s3session = session.New(&conf)
 }
 
-func Upload(buffer bytes.Buffer, mimetype string, filename string, Config Config) {
+func Upload(buffer bytes.Buffer, mimetype string, filename string, Config Config) error {
 	uploader := s3manager.NewUploader(s3session)
 
 	fmt.Println("Uploading file to S3...")
@@ -31,8 +30,8 @@ func Upload(buffer bytes.Buffer, mimetype string, filename string, Config Config
 		ContentType: aws.String(mimetype),
 	})
 	if err != nil {
-		fmt.Println("error", err)
-		os.Exit(1)
+		return err
 	}
 	fmt.Printf("Successfully uploaded %s\n", result.Location)
+	return nil
 }
