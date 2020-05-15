@@ -3,6 +3,7 @@ module waifu.pics
 go 1.14
 
 require (
+	github.com/aws/aws-sdk-go v1.30.28
 	github.com/gorilla/mux v1.7.4
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/pkg/errors v0.9.1 // indirect

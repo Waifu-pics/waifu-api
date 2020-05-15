@@ -21,6 +21,7 @@ func Router(mux *mux.Router, config util.Config) *mux.Router {
 
 	// Rest of front end
 	Docs(mux, config)
+	API.UploadHandle(mux, config)
 
 	// Other important things
 	mux.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("external/static/"))))

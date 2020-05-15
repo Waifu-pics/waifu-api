@@ -14,6 +14,13 @@ type Config struct {
 		URL    string `json:"URL"`
 		DBNAME string `json:"DBNAME"`
 	} `json:"DB"`
+	S3 struct {
+		ENDPOINT  string `json:"ENDPOINT"`
+		ACCESSKEY string `json:"ACCESSKEY"`
+		SECRETKEY string `json:"SECRETKEY"`
+		REGION    string `json:"REGION"`
+		BUCKET    string `json:"BUCKET"`
+	} `json:"S3"`
 	ENDPOINTS []string `json:"ENDPOINTS"`
 }
 

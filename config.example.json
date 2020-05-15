@@ -7,6 +7,14 @@
         "DBNAME": "database" 
     },
 
+    "S3": {
+        "ENDPOINT": "s3 endpoint",
+        "ACCESSKEY": "s3 access key",
+        "SECRETKEY": "s3 secret key",
+        "REGION": "s3 region",
+        "BUCKET": "s3 bucket"
+    },
+
     "ENDPOINTS": [
         "sfw",
         "nsfw"
