@@ -3,7 +3,6 @@ package API
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -34,7 +33,7 @@ func SingleImagePoint(mux *mux.Router, endpoint string, conf util.Config) {
 
 		response, _ := json.Marshal(sendRes{URL: conf.URL + dumpRes[0].URL})
 
-		fmt.Fprintf(w, string(response))
+		util.WriteResp(w, 200, string(response))
 
 		defer r.Body.Close()
 
@@ -83,7 +82,8 @@ func ManyImagePoint(mux *mux.Router, endpoint string, conf util.Config) {
 		}
 
 		response, _ := json.Marshal(sendRes{Data: urls})
-		fmt.Fprintf(w, string(response))
+
+		util.WriteResp(w, 200, string(response))
 
 		defer r.Body.Close()
 

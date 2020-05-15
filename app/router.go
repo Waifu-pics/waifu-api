@@ -24,7 +24,7 @@ func Router(mux *mux.Router, config util.Config) *mux.Router {
 	API.UploadHandle(mux, config)
 
 	// Other important things
-	mux.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("external/static/"))))
+	mux.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("public/static/"))))
 	mux.NotFoundHandler = mux.NewRoute().HandlerFunc(Error404).GetHandler()
 
 	return mux

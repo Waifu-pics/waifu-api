@@ -18,9 +18,9 @@ func Grid(mux *mux.Router, endpoint string, conf util.Config) {
 	p := grid{URL: conf.URL, Endpoint: endpoint}
 	// Setting up all templates
 	t := template.Must(template.ParseFiles(
-		"external/templates/grid.html",
-		"external/templates/partials/meta.html",
-		"external/templates/partials/navbar.html"))
+		"public/templates/grid.html",
+		"public/templates/partials/meta.html",
+		"public/templates/partials/navbar.html"))
 
 	// This is separate because sfw should be on index
 	if endpoint == "sfw" {
@@ -46,9 +46,9 @@ func Docs(mux *mux.Router, conf util.Config) {
 		data := docs{Endpoints: conf.ENDPOINTS}
 
 		t := template.Must(template.ParseFiles(
-			"external/templates/docs.html",
-			"external/templates/partials/meta.html",
-			"external/templates/partials/navbar.html"))
+			"public/templates/docs.html",
+			"public/templates/partials/meta.html",
+			"public/templates/partials/navbar.html"))
 
 		t.ExecuteTemplate(w, "docs", data)
 		defer r.Body.Close()
@@ -58,9 +58,9 @@ func Docs(mux *mux.Router, conf util.Config) {
 // Error404 : Not found error handler
 func Error404(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles(
-		"external/templates/404.html",
-		"external/templates/partials/meta.html",
-		"external/templates/partials/navbar.html"))
+		"public/templates/404.html",
+		"public/templates/partials/meta.html",
+		"public/templates/partials/navbar.html"))
 
 	t.ExecuteTemplate(w, "404", nil)
 	defer r.Body.Close()
