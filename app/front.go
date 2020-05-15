@@ -18,7 +18,7 @@ func Grid(mux *mux.Router, endpoint string, conf util.Config) {
 	p := grid{URL: conf.URL, Endpoint: endpoint}
 	// Setting up all templates
 	t := template.Must(template.ParseFiles(
-		"external/templates/index.html",
+		"external/templates/grid.html",
 		"external/templates/partials/meta.html",
 		"external/templates/partials/navbar.html"))
 
@@ -30,7 +30,24 @@ func Grid(mux *mux.Router, endpoint string, conf util.Config) {
 	}
 
 	mux.HandleFunc("/"+endpoint, func(w http.ResponseWriter, r *http.Request) {
-		// t, _ := template.ParseFiles("external/templates/index.tmpl")
 		t.ExecuteTemplate(w, "grid", p)
 	}).Methods("GET")
+}
+
+type docs struct {
+	Endpoints []string
+}
+
+// Docs : This is the api page
+func Docs(mux *mux.Router, conf util.Config) {
+	mux.HandleFunc("/docs", func(w http.ResponseWriter, r *http.Request) {
+		data := docs{Endpoints: conf.ENDPOINTS}
+
+		t := template.Must(template.ParseFiles(
+			"external/templates/docs.html",
+			"external/templates/partials/meta.html",
+			"external/templates/partials/navbar.html"))
+
+		t.ExecuteTemplate(w, "docs", data)
+	})
 }

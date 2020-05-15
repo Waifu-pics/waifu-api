@@ -50,8 +50,13 @@ func ManyImagePoint(mux *mux.Router, endpoint string, conf util.Config) {
 
 		json.NewDecoder(r.Body).Decode(&excludeDat)
 
-		matchStage := bson.D{{"$match", bson.D{{"type", endpoint}, {"verified", true}}}}
-		sampleStage := bson.D{{"$sample", bson.D{{"size", 30}}}}
+		result := bson.A{}
+		for _, e := range excludeDat.Exclude {
+			result = append(result, e)
+		}
+
+		matchStage := bson.D{{"$match", bson.D{{"type", endpoint}, {"verified", true}, {"file", bson.D{{"$nin", result}}}}}}
+		sampleStage := bson.D{{"$sample", bson.D{{"size", 100}}}}
 
 		mongoRes, err := util.Database.Collection("uploads").Aggregate(context.TODO(), mongo.Pipeline{matchStage, sampleStage})
 

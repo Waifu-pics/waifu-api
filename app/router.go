@@ -19,6 +19,8 @@ func Router(mux *mux.Router, config util.Config) *mux.Router {
 		Grid(mux, endpoint, config)
 	}
 
+	Docs(mux, config)
+
 	// Static file server
 	mux.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("external/static/"))))
 

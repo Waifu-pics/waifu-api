@@ -4,7 +4,6 @@ go 1.14
 
 require (
 	github.com/gorilla/mux v1.7.4
-	github.com/kr/pretty v0.2.0 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/stretchr/testify v1.5.1 // indirect
