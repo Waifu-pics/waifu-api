@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+
 	"waifu.pics/app/API"
 	"waifu.pics/util"
 )
