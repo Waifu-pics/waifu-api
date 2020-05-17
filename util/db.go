@@ -9,6 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// Database : global database instance for use around the app
 var Database *mongo.Database
 
 // InitDB : Mongo Initializer

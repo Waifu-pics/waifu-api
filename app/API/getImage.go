@@ -1,4 +1,4 @@
-package API
+package api
 
 import (
 	"context"
@@ -14,8 +14,20 @@ import (
 // SingleImagePoint : Get a single image from the DB
 func SingleImagePoint(mux *mux.Router, endpoint string, conf util.Config) {
 	mux.HandleFunc("/api/"+endpoint, func(w http.ResponseWriter, r *http.Request) {
-		matchStage := bson.D{{"$match", bson.D{{"type", endpoint}, {"verified", true}}}}
-		sampleStage := bson.D{{"$sample", bson.D{{"size", 1}}}}
+		// matchStage := bson.D{{Key: "$match", Value: bson.D{{Key: "type", Value: endpoint}, {Key: "verified", Value: true}}}}
+		// sampleStage := bson.D{{Key: "$sample", Value: bson.D{{Key: "size", Value: 1}}}}
+		matchStage := bson.D{{
+			Key: "$match", Value: bson.D{
+				{Key: "type", Value: endpoint},
+				{Key: "verified", Value: true},
+			},
+		}}
+
+		sampleStage := bson.D{{
+			Key: "$sample", Value: bson.D{
+				{Key: "size", Value: 1},
+			},
+		}}
 
 		mongoRes, err := util.Database.Collection("uploads").Aggregate(context.TODO(), mongo.Pipeline{matchStage, sampleStage})
 
@@ -55,9 +67,22 @@ func ManyImagePoint(mux *mux.Router, endpoint string, conf util.Config) {
 			result = append(result, image)
 		}
 
-		// Run mongo query
-		matchStage := bson.D{{"$match", bson.D{{"type", endpoint}, {"verified", true}, {"file", bson.D{{"$nin", result}}}}}}
-		sampleStage := bson.D{{"$sample", bson.D{{"size", 30}}}}
+		matchStage := bson.D{{
+			Key: "$match", Value: bson.D{
+				{Key: "type", Value: endpoint},
+				{Key: "verified", Value: true},
+				{Key: "file", Value: bson.D{
+					{Key: "$nin", Value: result},
+				}},
+			},
+		}}
+
+		sampleStage := bson.D{{
+			Key: "$sample", Value: bson.D{
+				{Key: "size", Value: 30},
+			},
+		}}
+
 		mongoRes, err := util.Database.Collection("uploads").Aggregate(context.TODO(), mongo.Pipeline{matchStage, sampleStage})
 
 		// Response non json struct
