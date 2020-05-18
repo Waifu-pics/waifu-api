@@ -55,6 +55,17 @@ func Docs(mux *mux.Router, conf util.Config) {
 	})
 }
 
+// AdminLogin : Login page for admins
+func AdminLogin(w http.ResponseWriter, r *http.Request) {
+	t := template.Must(template.ParseFiles(
+		"public/templates/admin/login.html",
+		"public/templates/partials/meta.html",
+		"public/templates/partials/navbar.html"))
+
+	t.ExecuteTemplate(w, "adminlogin", nil)
+	defer r.Body.Close()
+}
+
 // Error404 : Not found error handler
 func Error404(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles(

@@ -14,8 +14,6 @@ import (
 // SingleImagePoint : Get a single image from the DB
 func SingleImagePoint(mux *mux.Router, endpoint string, conf util.Config) {
 	mux.HandleFunc("/api/"+endpoint, func(w http.ResponseWriter, r *http.Request) {
-		// matchStage := bson.D{{Key: "$match", Value: bson.D{{Key: "type", Value: endpoint}, {Key: "verified", Value: true}}}}
-		// sampleStage := bson.D{{Key: "$sample", Value: bson.D{{Key: "size", Value: 1}}}}
 		matchStage := bson.D{{
 			Key: "$match", Value: bson.D{
 				{Key: "type", Value: endpoint},
@@ -85,14 +83,14 @@ func ManyImagePoint(mux *mux.Router, endpoint string, conf util.Config) {
 
 		mongoRes, err := util.Database.Collection("uploads").Aggregate(context.TODO(), mongo.Pipeline{matchStage, sampleStage})
 
-		// Response non json struct
+		// Query non json struct
 		var dumpRes []struct {
 			URLs string `bson:"file,omitempty"`
 		}
 
 		// Dump the query to dumpRes
 		if err = mongoRes.All(context.TODO(), &dumpRes); err != nil {
-			panic(err)
+			return
 		}
 
 		// Response json struct

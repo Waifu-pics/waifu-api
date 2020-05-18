@@ -20,9 +20,16 @@ func Router(mux *mux.Router, config util.Config) *mux.Router {
 		Grid(mux, endpoint, config)
 	}
 
-	// Rest of front end
+	// Front end
 	Docs(mux, config)
+	mux.HandleFunc("/admin/login", AdminLogin)
+
+	// Api stuff
 	api.UploadHandle(mux, config)
+	mux.HandleFunc("/api/admin/login", api.AdminLogin).Methods("POST")
+	mux.HandleFunc("/api/admin/verifytoken", api.AdminVerify).Methods("POST")
+	mux.HandleFunc("/api/admin/list", api.ListFile).Methods("POST")
+	api.VerifyFile(mux, config)
 
 	// Other important things
 	mux.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("public/static/"))))

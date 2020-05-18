@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 )
 
@@ -35,5 +36,23 @@ func Upload(buffer bytes.Buffer, mimetype string, filename string, Config Config
 		return err
 	}
 	fmt.Printf("Successfully uploaded %s\n", result.Location)
+	return nil
+}
+
+// DeleteFile : delete a file from the s3 container
+func DeleteFile(filename string, Config Config) error {
+	deleter := s3manager.NewBatchDelete(s3session)
+
+	objects := []s3manager.BatchDeleteObject{{
+		Object: &s3.DeleteObjectInput{
+			Key:    aws.String(filename),
+			Bucket: aws.String(Config.S3.BUCKET),
+		},
+	}}
+
+	if err := deleter.Delete(aws.BackgroundContext(), &s3manager.DeleteObjectsIterator{Objects: objects}); err != nil {
+		return err
+	}
+
 	return nil
 }

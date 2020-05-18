@@ -1,7 +1,7 @@
 if (localStorage.getItem("token") != null) {
     axios({
         method: 'post',
-        url: '/api/admin/auth/verify',
+        url: '/api/admin/verifytoken',
         data: {
             'token': localStorage.getItem("token")
         }
@@ -17,7 +17,7 @@ if (localStorage.getItem("token") != null) {
                 $("#efs").append(`
                 <div id="${index}">
                 <th><p style="display: inline; color: #7a7a7a;">${type}</p></th>
-                <th><a style="color: #8a8a8a" href="https://cdn.nekos.vip/${file}">${file}</a></th>
+                <th><a style="color: #8a8a8a" href="https://i.waifu.pics/${file}">${file}</a></th>
                 <th><a filename="${file}" id="${index}" style="color: var(--error-color);" class="dlfl">Delete</a></th>
                 <th><a filename="${file}" id="${index}" style="color: var(--primary-color);" class="vfl">Verify</a></th>
                 </div>

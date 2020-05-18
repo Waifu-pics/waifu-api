@@ -1,0 +1,26 @@
+{{define "adminlogin"}}
+<!DOCTYPE html>
+<html>
+
+<head>
+    {{template "meta" .}}
+</head>
+
+<body>
+    {{template "navbar" .}}
+    <div class="terminal-alert terminal-alert-error" id="responseBox" style="text-align: center; max-width: 500px; margin: 0 auto; margin-top: 70px; visibility: hidden;"></div>
+    <div class="centered">
+        <div style="width: 400px; align-items: center; text-align: center;">
+            <fieldset>
+                <legend>ADMIN LOGIN</legend>
+                <input id="usernameField" style="max-width: 300px; text-align: center;" placeholder="Username" type="text">
+                <input id="passwordField" style="max-width: 300px; text-align: center; margin-top: 10px;" placeholder="Password" type="password">
+                <button class="btn btn-primary btn-ghost" style="margin-top: 10px;" onclick="tryLogin()">Login</button>
+            </fieldset>
+        </div>     
+    </div>
+    <script src="/static/scripts/adminlogin.js"></script>
+</body>
+
+</html>
+{{end}}

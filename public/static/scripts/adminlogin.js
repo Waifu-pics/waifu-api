@@ -1,7 +1,7 @@
 if (localStorage.getItem("token") != null) {
     axios({
         method: 'post',
-        url: '/api/admin/auth/verify',
+        url: '/api/admin/verify',
         data: {
             'token': localStorage.getItem("token")
         }
@@ -15,7 +15,7 @@ if (localStorage.getItem("token") != null) {
 function tryLogin() {
     axios({
         method: 'post',
-        url: '/api/admin/auth/login',
+        url: '/api/admin/login',
         data: {
             'username': document.getElementById("usernameField").value,
             'password': document.getElementById("passwordField").value
