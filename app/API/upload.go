@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
-	"fmt"
+	"encoding/hex"
 	"io"
 	"math/rand"
 	"net/http"
@@ -20,6 +20,14 @@ import (
 func UploadHandle(mux *mux.Router, Config util.Config) {
 	mux.HandleFunc("/api/upload", func(w http.ResponseWriter, r *http.Request) {
 		const uploadsize int64 = 30 * 1000 * 1000
+
+		resType := r.Header.Get("type")
+		resToken := r.Header.Get("token")
+
+		if !findInSlice(Config.ENDPOINTS, resType) {
+			util.WriteResp(w, 400, "Invalid type!")
+			return
+		}
 
 		file, freq, err := r.FormFile("uploadFile")
 		if err != nil {
@@ -40,20 +48,25 @@ func UploadHandle(mux *mux.Router, Config util.Config) {
 			return
 		}
 
-		hash := md5.New()
-		hash.Write([]byte(buf.Bytes()))
+		md5sum := md5.Sum([]byte(buf.Bytes()))
+		hash := hex.EncodeToString(md5sum[:])
 
 		var mimetype = freq.Header.Get("Content-Type")
 		var uplfilename = freq.Filename
 		var filename = randomString(7) + "." + getExtension(uplfilename)
 
+		count, _ := util.Database.Collection("uploads").CountDocuments(context.TODO(), bson.M{"md5": hash})
+		if count > 0 {
+			util.WriteResp(w, 400, "File already exists!")
+			return
+		}
+
 		// Check if filename exists and reroll if yes
 		filter := bson.M{"file": filename}
-		count, _ := util.Database.Collection("uploads").CountDocuments(context.TODO(), filter)
+		count, _ = util.Database.Collection("uploads").CountDocuments(context.TODO(), filter)
 		for count > 0 {
 			filename = randomString(7) + "." + getExtension(uplfilename)
 			count, _ = util.Database.Collection("uploads").CountDocuments(context.TODO(), filter)
-			fmt.Println("rip")
 		}
 
 		// Actually upload file with S3
@@ -63,8 +76,19 @@ func UploadHandle(mux *mux.Router, Config util.Config) {
 			return
 		}
 
-		util.Database.Collection("uploads").InsertOne(context.TODO(), bson.M{"file": filename, "verified": false})
+		// Check if user is an admin to skip verification
+		if resToken != "" {
+			count, _ = util.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": resToken})
+			if count != 0 {
+				util.Database.Collection("uploads").InsertOne(context.TODO(), bson.M{"file": filename, "verified": true, "md5": hash, "type": resType})
+				return
+			}
+		}
+
+		util.Database.Collection("uploads").InsertOne(context.TODO(), bson.M{"file": filename, "verified": false, "md5": hash, "type": resType})
 		util.WriteResp(w, 200, "File uploaded!")
+
+		defer r.Body.Close()
 	})
 }
 
@@ -88,4 +112,13 @@ func randomString(length int) string {
 		b[i] = charset[seededRand.Intn(len(charset))]
 	}
 	return string(b)
+}
+
+func findInSlice(slice []string, val string) bool {
+	for _, item := range slice {
+		if item == val {
+			return true
+		}
+	}
+	return false
 }

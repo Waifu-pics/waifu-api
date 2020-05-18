@@ -13,14 +13,21 @@ import (
 
 // ListFile : listing all unverified files
 func ListFile(w http.ResponseWriter, r *http.Request) {
-	if err := util.CheckAuth(w, r); err != nil {
+	var responseData struct {
+		Token string `json:"token"`
+	}
+
+	json.NewDecoder(r.Body).Decode(&responseData)
+
+	count, _ := util.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": responseData.Token})
+	if count == 0 {
 		util.WriteResp(w, 400, "Invalid credentials!")
 		return
 	}
 
 	matchStage := bson.D{{
 		Key: "$match", Value: bson.D{
-			{Key: "verified", Value: true},
+			{Key: "verified", Value: false},
 		},
 	}}
 
@@ -33,7 +40,7 @@ func ListFile(w http.ResponseWriter, r *http.Request) {
 	mongoRes, _ := util.Database.Collection("uploads").Aggregate(context.TODO(), mongo.Pipeline{matchStage, sortStage})
 
 	var dumpRes []struct {
-		URL  string `bson:"file,omitempty"`
+		File string `bson:"file,omitempty"`
 		Type string `bson:"type,omitempty"`
 	}
 
@@ -51,19 +58,21 @@ func ListFile(w http.ResponseWriter, r *http.Request) {
 // VerifyFile : Verifying user uploads
 func VerifyFile(mux *mux.Router, conf util.Config) {
 	mux.HandleFunc("/api/admin/verify", func(w http.ResponseWriter, r *http.Request) {
-		if err := util.CheckAuth(w, r); err != nil {
-			util.WriteResp(w, 400, "Invalid credentials!")
-			return
-		}
-
 		var responseData struct {
-			File       string `json:"image"`
 			IsVerified bool   `json:"isVer"`
+			File       string `json:"file"`
+			Token      string `json:"token"`
 		}
 
 		json.NewDecoder(r.Body).Decode(&responseData)
 
-		count, _ := util.Database.Collection("uploads").CountDocuments(context.TODO(), bson.M{"file": responseData.File})
+		count, _ := util.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": responseData.Token})
+		if count == 0 {
+			util.WriteResp(w, 400, "Invalid credentials!")
+			return
+		}
+
+		count, _ = util.Database.Collection("uploads").CountDocuments(context.TODO(), bson.M{"file": responseData.File})
 		if count == 0 {
 			util.WriteResp(w, 400, "Invalid file!")
 			return

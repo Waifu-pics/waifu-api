@@ -1,6 +1,8 @@
 package util
 
-import "net/http"
+import (
+	"net/http"
+)
 
 // WriteResp : Better than simply fmt.Fprintf
 func WriteResp(w http.ResponseWriter, status int, msg string) {

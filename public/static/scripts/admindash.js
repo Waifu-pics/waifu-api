@@ -8,18 +8,18 @@ if (localStorage.getItem("token") != null) {
     }).then(function () {
         axios({
             method: 'post',
-            url: '/api/admin/listfile',
+            url: '/api/admin/list',
             data: {
                 'token': localStorage.getItem("token"),
             }
         }).then(function (response) {
-            response.data.map( ({file, type}, index) => {
+            response.data.map( ({File, Type}, index) => {
                 $("#efs").append(`
                 <div id="${index}">
-                <th><p style="display: inline; color: #7a7a7a;">${type}</p></th>
-                <th><a style="color: #8a8a8a" href="https://i.waifu.pics/${file}">${file}</a></th>
-                <th><a filename="${file}" id="${index}" style="color: var(--error-color);" class="dlfl">Delete</a></th>
-                <th><a filename="${file}" id="${index}" style="color: var(--primary-color);" class="vfl">Verify</a></th>
+                <th><p style="display: inline; color: #7a7a7a;">${Type}</p></th>
+                <th><a style="color: #8a8a8a" href="https://i.waifu.pics/${File}">${File}</a></th>
+                <th><a filename="${File}" id="${index}" style="color: var(--error-color);" class="dlfl">Delete</a></th>
+                <th><a filename="${File}" id="${index}" style="color: var(--primary-color);" class="vfl">Verify</a></th>
                 </div>
                 `)
             })
@@ -47,7 +47,7 @@ axios({
     url: '/api/admin/verify',
     data: {
         'token': localStorage.getItem("token"),
-        'image': file,
+        'file': file,
         'isVer': false
     }
 }).then(function () {
@@ -64,7 +64,7 @@ $(document).on('click','.vfl', function() {
     url: '/api/admin/verify',
     data: {
         'token': localStorage.getItem("token"),
-        'image': file,
+        'file': file,
         'isVer': true
     }
 }).then(function() {

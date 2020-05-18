@@ -22,7 +22,9 @@ func Router(mux *mux.Router, config util.Config) *mux.Router {
 
 	// Front end
 	Docs(mux, config)
-	mux.HandleFunc("/admin/login", AdminLogin)
+	UploadFront(mux, config)
+	mux.HandleFunc("/admin", AdminLogin)
+	mux.HandleFunc("/admin/dash", AdminDash)
 
 	// Api stuff
 	api.UploadHandle(mux, config)

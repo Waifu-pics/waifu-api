@@ -55,6 +55,21 @@ func Docs(mux *mux.Router, conf util.Config) {
 	})
 }
 
+// UploadFront : This is the upload page
+func UploadFront(mux *mux.Router, conf util.Config) {
+	mux.HandleFunc("/upload", func(w http.ResponseWriter, r *http.Request) {
+		data := docs{Endpoints: conf.ENDPOINTS}
+
+		t := template.Must(template.ParseFiles(
+			"public/templates/upload.html",
+			"public/templates/partials/meta.html",
+			"public/templates/partials/navbar.html"))
+
+		t.ExecuteTemplate(w, "upload", data)
+		defer r.Body.Close()
+	})
+}
+
 // AdminLogin : Login page for admins
 func AdminLogin(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles(
@@ -63,6 +78,17 @@ func AdminLogin(w http.ResponseWriter, r *http.Request) {
 		"public/templates/partials/navbar.html"))
 
 	t.ExecuteTemplate(w, "adminlogin", nil)
+	defer r.Body.Close()
+}
+
+// AdminDash : Admin dashboard page
+func AdminDash(w http.ResponseWriter, r *http.Request) {
+	t := template.Must(template.ParseFiles(
+		"public/templates/admin/dash.html",
+		"public/templates/partials/meta.html",
+		"public/templates/partials/navbar.html"))
+
+	t.ExecuteTemplate(w, "admindash", nil)
 	defer r.Body.Close()
 }
 
