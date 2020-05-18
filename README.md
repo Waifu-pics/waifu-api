@@ -7,4 +7,5 @@
 <img src="https://www.codefactor.io/repository/github/riku32/waifu.pics/badge/dev">
 <img src="https://img.shields.io/github/workflow/status/Riku32/waifu.pics/Go?style=&color=blue">
 <img src="https://img.shields.io/github/license/Riku32/Dash">
+<br><h3><a href="https://builds.kawaii.sh/project.html?projectId=Waifu&tab=projectOverview&guest=1">Builds</a></h3>
 </div>
