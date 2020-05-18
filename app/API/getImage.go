@@ -13,7 +13,7 @@ import (
 
 // SingleImagePoint : Get a single image from the DB
 func SingleImagePoint(mux *mux.Router, endpoint string, conf util.Config) {
-	mux.HandleFunc("/api/"+endpoint, func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/img/"+endpoint, func(w http.ResponseWriter, r *http.Request) {
 		matchStage := bson.D{{
 			Key: "$match", Value: bson.D{
 				{Key: "type", Value: endpoint},
