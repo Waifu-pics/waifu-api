@@ -26,10 +26,10 @@ func Router(mux *mux.Router, config util.Config, database *mongo.Database) *mux.
 		mux.HandleFunc("/api/"+endpoint, apiMulti.GetImage).Methods("GET")
 		mux.HandleFunc("/api/many/"+endpoint, apiMulti.GetManyImage).Methods("POST")
 
-		// If endpoint is sfw then use /
-		if endpoint == "sfw" {
+		switch endpoint {
+		case "sfw":
 			mux.HandleFunc("/", viewsMulti.Grid)
-		} else {
+		default:
 			mux.HandleFunc("/"+endpoint, viewsMulti.Grid)
 		}
 	}
