@@ -1,8 +1,9 @@
 package app
 
 import (
-	"go.mongodb.org/mongo-driver/mongo"
 	"net/http"
+
+	"go.mongodb.org/mongo-driver/mongo"
 	"waifu.pics/app/Views"
 
 	"github.com/gorilla/mux"
@@ -13,7 +14,7 @@ import (
 
 // Router : Init router function
 func Router(mux *mux.Router, config util.Config, database *mongo.Database) *mux.Router {
-	front := Views.Front{config.ENDPOINTS}
+	front := Views.Front{Endpoints: config.ENDPOINTS}
 	endpoints := &api.API{Config: config, Database: database}
 
 	// Execute this loop for every endpoint in config
