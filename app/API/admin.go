@@ -4,24 +4,24 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"waifu.pics/util/file"
+	"waifu.pics/util/web"
 
-	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"waifu.pics/util"
 )
 
 // ListFile : listing all unverified files
-func ListFile(w http.ResponseWriter, r *http.Request) {
+func (api API) ListFile(w http.ResponseWriter, r *http.Request) {
 	var responseData struct {
 		Token string `json:"token"`
 	}
 
-	json.NewDecoder(r.Body).Decode(&responseData)
+	_ = json.NewDecoder(r.Body).Decode(&responseData)
 
-	count, _ := util.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": responseData.Token})
+	count, _ := api.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": responseData.Token})
 	if count == 0 {
-		util.WriteResp(w, 400, "Invalid credentials!")
+		web.WriteResp(w, 400, "Invalid credentials!")
 		return
 	}
 
@@ -37,7 +37,7 @@ func ListFile(w http.ResponseWriter, r *http.Request) {
 		},
 	}}
 
-	mongoRes, _ := util.Database.Collection("uploads").Aggregate(context.TODO(), mongo.Pipeline{matchStage, sortStage})
+	mongoRes, _ := api.Database.Collection("uploads").Aggregate(context.TODO(), mongo.Pipeline{matchStage, sortStage})
 
 	var dumpRes []struct {
 		File string `bson:"file,omitempty"`
@@ -50,50 +50,49 @@ func ListFile(w http.ResponseWriter, r *http.Request) {
 
 	response, _ := json.Marshal(dumpRes)
 
-	util.WriteResp(w, 200, string(response))
+	web.WriteResp(w, 200, string(response))
 
 	defer r.Body.Close()
 }
 
 // VerifyFile : Verifying user uploads
-func VerifyFile(mux *mux.Router, conf util.Config) {
-	mux.HandleFunc("/api/admin/verify", func(w http.ResponseWriter, r *http.Request) {
-		var responseData struct {
-			IsVerified bool   `json:"isVer"`
-			File       string `json:"file"`
-			Token      string `json:"token"`
-		}
+func (api API) VerifyFile(w http.ResponseWriter, r *http.Request) {
+	var responseData struct {
+		IsVerified bool   `json:"isVer"`
+		File       string `json:"file"`
+		Token      string `json:"token"`
+	}
 
-		json.NewDecoder(r.Body).Decode(&responseData)
+	json.NewDecoder(r.Body).Decode(&responseData)
 
-		count, _ := util.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": responseData.Token})
-		if count == 0 {
-			util.WriteResp(w, 400, "Invalid credentials!")
+	count, _ := api.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": responseData.Token})
+	if count == 0 {
+		web.WriteResp(w, 400, "Invalid credentials!")
+		return
+	}
+
+	count, _ = api.Database.Collection("uploads").CountDocuments(context.TODO(), bson.M{"file": responseData.File})
+	if count == 0 {
+		web.WriteResp(w, 400, "Invalid file!")
+		return
+	}
+
+	filter := bson.M{"file": responseData.File}
+
+	if responseData.IsVerified == true {
+		update := bson.M{"$set": bson.M{"verified": true}}
+		api.Database.Collection("uploads").UpdateOne(context.TODO(), filter, update)
+
+		web.WriteResp(w, 200, "File has been verified!")
+	} else {
+		if err := file.DeleteFile(responseData.File, api.Config); err != nil {
+			web.WriteResp(w, 400, "File could not be deleted!")
 			return
 		}
+		api.Database.Collection("uploads").DeleteOne(context.TODO(), filter)
 
-		count, _ = util.Database.Collection("uploads").CountDocuments(context.TODO(), bson.M{"file": responseData.File})
-		if count == 0 {
-			util.WriteResp(w, 400, "Invalid file!")
-			return
-		}
+		web.WriteResp(w, 200, "File has been Deleted")
+	}
 
-		filter := bson.M{"file": responseData.File}
-
-		if responseData.IsVerified == true {
-			update := bson.M{"$set": bson.M{"verified": true}}
-			util.Database.Collection("uploads").UpdateOne(context.TODO(), filter, update)
-
-			util.WriteResp(w, 200, "File has been verified!")
-		} else {
-			if err := util.DeleteFile(responseData.File, conf); err != nil {
-				return
-			}
-			util.Database.Collection("uploads").DeleteOne(context.TODO(), filter)
-
-			util.WriteResp(w, 200, "File has been Deleted")
-		}
-
-		defer r.Body.Close()
-	})
+	defer r.Body.Close()
 }

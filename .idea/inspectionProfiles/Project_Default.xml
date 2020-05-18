@@ -1,0 +1,26 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="GoUnhandledErrorResult" enabled="true" level="WARNING" enabled_by_default="true">
+      <methods>
+        <method importPath="hash" receiver="Hash" name="Write" />
+        <method importPath="strings" receiver="*Builder" name="Write" />
+        <method importPath="strings" receiver="*Builder" name="WriteByte" />
+        <method importPath="bytes" receiver="*Buffer" name="WriteRune" />
+        <method importPath="bytes" receiver="*Buffer" name="Write" />
+        <method importPath="bytes" receiver="*Buffer" name="WriteString" />
+        <method importPath="strings" receiver="*Builder" name="WriteString" />
+        <method importPath="bytes" receiver="*Buffer" name="WriteByte" />
+        <method importPath="strings" receiver="*Builder" name="WriteRune" />
+        <method importPath="math/rand" receiver="*Rand" name="Read" />
+        <method importPath="io" receiver="ReadCloser" name="Close" />
+        <method importPath="html/template" receiver="*Template" name="ExecuteTemplate" />
+        <method importPath="go.mongodb.org/mongo-driver/mongo" receiver="*Collection" name="InsertOne" />
+        <method importPath="mime/multipart" receiver="File" name="Close" />
+        <method importPath="go.mongodb.org/mongo-driver/mongo" receiver="*Collection" name="UpdateOne" />
+        <method importPath="go.mongodb.org/mongo-driver/mongo" receiver="*Collection" name="DeleteOne" />
+        <method importPath="encoding/json" receiver="*Decoder" name="Decode" />
+      </methods>
+    </inspection_tool>
+  </profile>
+</component>

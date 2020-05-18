@@ -1,19 +1,17 @@
-package util
+package database
 
 import (
 	"context"
 	"log"
 	"time"
+	"waifu.pics/util"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// Database : global database instance for use around the app
-var Database *mongo.Database
-
 // InitDB : Mongo Initializer
-func InitDB(config Config) {
+func InitDB(config util.Config) *mongo.Database {
 	client, err := mongo.NewClient(options.Client().ApplyURI(config.DB.URL))
 	if err != nil {
 		log.Fatal(err)
@@ -28,5 +26,5 @@ func InitDB(config Config) {
 		log.Fatal(err)
 	}
 
-	Database = client.Database(config.DB.DBNAME)
+	return client.Database(config.DB.DBNAME)
 }
