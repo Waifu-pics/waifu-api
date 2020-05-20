@@ -83,7 +83,11 @@ func (api API) UploadHandle(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	api.Database.Collection("uploads").InsertOne(context.TODO(), bson.M{"file": filename, "verified": false, "md5": hash, "type": resType})
+	_, err = api.Database.Collection("uploads").InsertOne(context.TODO(), bson.M{"file": filename, "verified": false, "md5": hash, "type": resType})
+	if err != nil {
+		_ = file.DeleteFile(filename, api.Config)
+	}
+
 	web.WriteResp(w, 200, "File uploaded!")
 
 	defer r.Body.Close()
