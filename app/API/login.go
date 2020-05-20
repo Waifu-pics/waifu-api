@@ -18,7 +18,14 @@ func (api API) AdminLogin(w http.ResponseWriter, r *http.Request) {
 		Password string `json:"password"`
 	}
 
-	json.NewDecoder(r.Body).Decode(&responseData)
+	err := json.NewDecoder(r.Body).Decode(&responseData)
+	if err != nil {
+		web.WriteResp(w, 400, "Invalid JSON!")
+		return
+	}
+
+	fmt.Println(responseData.Username)
+	fmt.Println(responseData.Password)
 
 	count, _ := api.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"username": responseData.Username})
 	if count == 0 {
@@ -59,7 +66,11 @@ func (api API) AdminVerify(w http.ResponseWriter, r *http.Request) {
 		Token string `json:"token"`
 	}
 
-	json.NewDecoder(r.Body).Decode(&responseData)
+	err := json.NewDecoder(r.Body).Decode(&responseData)
+	if err != nil {
+		web.WriteResp(w, 400, "Invalid JSON!")
+		return
+	}
 
 	count, _ := api.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": responseData.Token})
 	if count == 0 {

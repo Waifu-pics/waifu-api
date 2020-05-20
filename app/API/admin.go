@@ -17,7 +17,11 @@ func (api API) ListFile(w http.ResponseWriter, r *http.Request) {
 		Token string `json:"token"`
 	}
 
-	_ = json.NewDecoder(r.Body).Decode(&responseData)
+	err := json.NewDecoder(r.Body).Decode(&responseData)
+	if err != nil {
+		web.WriteResp(w, 400, "Invalid JSON!")
+		return
+	}
 
 	count, _ := api.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": responseData.Token})
 	if count == 0 {
@@ -63,7 +67,11 @@ func (api API) VerifyFile(w http.ResponseWriter, r *http.Request) {
 		Token      string `json:"token"`
 	}
 
-	json.NewDecoder(r.Body).Decode(&responseData)
+	err := json.NewDecoder(r.Body).Decode(&responseData)
+	if err != nil {
+		web.WriteResp(w, 400, "Invalid JSON!")
+		return
+	}
 
 	count, _ := api.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": responseData.Token})
 	if count == 0 {

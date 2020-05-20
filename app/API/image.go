@@ -11,11 +11,11 @@ import (
 )
 
 type Multi struct {
-	API *API
+	API      *API
 	Endpoint string
 }
 
-// SingleImagePoint : Get a single image from the DB
+// GetImage : Get a single image from the DB
 func (multi Multi) GetImage(w http.ResponseWriter, r *http.Request) {
 	matchStage := bson.D{{
 		Key: "$match", Value: bson.D{
