@@ -2,6 +2,7 @@ package app
 
 import (
 	"net/http"
+	"waifu.pics/util/config"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"waifu.pics/app/Views"
@@ -9,11 +10,10 @@ import (
 	"github.com/gorilla/mux"
 
 	api "waifu.pics/app/API"
-	"waifu.pics/util"
 )
 
 // Router : Init router function
-func Router(mux *mux.Router, config util.Config, database *mongo.Database) *mux.Router {
+func Router(mux *mux.Router, config config.Config, database *mongo.Database) *mux.Router {
 	front := Views.Front{Endpoints: config.ENDPOINTS}
 	endpoints := &api.API{Config: config, Database: database}
 
@@ -40,13 +40,15 @@ func Router(mux *mux.Router, config util.Config, database *mongo.Database) *mux.
 	mux.HandleFunc("/upload", front.UploadFront)
 	mux.HandleFunc("/admin", Views.AdminLogin)
 	mux.HandleFunc("/admin/dash", Views.AdminDash)
+	mux.HandleFunc("/pages", front.Pages)
 
 	// Api stuff
 	mux.HandleFunc("/api/upload", endpoints.UploadHandle).Methods("POST")
 	mux.HandleFunc("/api/admin/login", endpoints.AdminLogin).Methods("POST")
-	mux.HandleFunc("/api/admin/verifytoken", endpoints.AdminVerify).Methods("POST")
+	mux.HandleFunc("/api/admin/token", endpoints.AdminVerify).Methods("POST")
 	mux.HandleFunc("/api/admin/list", endpoints.ListFile).Methods("POST")
 	mux.HandleFunc("/api/admin/verify", endpoints.VerifyFile).Methods("POST")
+	mux.HandleFunc("/api/endpoints", endpoints.GetEndpoints).Methods("GET")
 
 	// Other important things
 	mux.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("public/static/"))))

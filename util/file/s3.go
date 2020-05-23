@@ -2,7 +2,7 @@ package file
 
 import (
 	"bytes"
-	"waifu.pics/util"
+	"waifu.pics/util/config"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -14,13 +14,13 @@ import (
 var s3session *session.Session
 
 // InitS3 : Initiate the S3 session, do not open a new session with each upload
-func InitS3(Config util.Config) {
+func InitS3(Config config.Config) {
 	conf := aws.Config{Region: aws.String(Config.S3.REGION), Endpoint: aws.String(Config.S3.ENDPOINT), Credentials: credentials.NewStaticCredentials(Config.S3.ACCESSKEY, Config.S3.SECRETKEY, "")}
 	s3session = session.New(&conf)
 }
 
 // Upload : Put a file on the S3 container with a buffer
-func Upload(buffer bytes.Buffer, mimetype string, filename string, Config util.Config) error {
+func Upload(buffer bytes.Buffer, mimetype string, filename string, Config config.Config) error {
 	uploader := s3manager.NewUploader(s3session)
 
 	_, err := uploader.Upload(&s3manager.UploadInput{
@@ -37,7 +37,7 @@ func Upload(buffer bytes.Buffer, mimetype string, filename string, Config util.C
 }
 
 // DeleteFile : delete a file from the s3 container
-func DeleteFile(filename string, Config util.Config) error {
+func DeleteFile(filename string, Config config.Config) error {
 	deleter := s3manager.NewBatchDelete(s3session)
 
 	objects := []s3manager.BatchDeleteObject{{

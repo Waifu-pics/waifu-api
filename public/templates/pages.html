@@ -1,0 +1,28 @@
+{{define "pages"}}
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+        {{template "meta" .}}
+        <link rel="stylesheet" href="/static/css/pages.css">
+    </head>
+
+    <body>
+    {{template "navbar" .}}
+    <div class="centered">
+        <div style="width: 500px; text-align: center;" class="terminal-card">
+            <header>Pages!</header>
+            <div>Here are all the different pages you can explore.</div>
+            <div>
+                {{range .}}
+                    <button class="btn btn-default btn-ghost" onclick="gotoPage('{{.}}')">{{.}}</button>
+                {{end}}
+            </div>
+            <p style="margin-bottom: 10px">If you want to use our API click <a href="/docs">here</a></p>
+        </div>
+    </div>
+
+    <script src="/static/scripts/pages.js"></script>
+    </body>
+    </html>
+{{end}}

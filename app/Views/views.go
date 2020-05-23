@@ -3,8 +3,7 @@ package Views
 import (
 	"html/template"
 	"net/http"
-
-	"waifu.pics/util"
+	"waifu.pics/util/config"
 )
 
 type Front struct {
@@ -13,7 +12,7 @@ type Front struct {
 
 type Multi struct {
 	Endpoint string
-	Config   util.Config
+	Config   config.Config
 }
 
 type grid struct {
@@ -42,6 +41,17 @@ func (front *Front) Docs(w http.ResponseWriter, r *http.Request) {
 		"public/templates/partials/navbar.html"))
 
 	t.ExecuteTemplate(w, "docs", front.Endpoints)
+	defer r.Body.Close()
+}
+
+// Pages : This is the docs page
+func (front *Front) Pages(w http.ResponseWriter, r *http.Request) {
+	t := template.Must(template.ParseFiles(
+		"public/templates/pages.html",
+		"public/templates/partials/meta.html",
+		"public/templates/partials/navbar.html"))
+
+	t.ExecuteTemplate(w, "pages", front.Endpoints)
 	defer r.Body.Close()
 }
 

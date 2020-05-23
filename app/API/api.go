@@ -2,10 +2,10 @@ package api
 
 import (
 	"go.mongodb.org/mongo-driver/mongo"
-	"waifu.pics/util"
+	"waifu.pics/util/config"
 )
 
 type API struct {
-	Config util.Config
+	Config   config.Config
 	Database *mongo.Database
 }

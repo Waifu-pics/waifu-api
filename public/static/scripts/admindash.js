@@ -1,7 +1,7 @@
 if (localStorage.getItem("token") != null) {
     axios({
         method: 'post',
-        url: '/api/admin/verifytoken',
+        url: '/api/admin/token',
         data: {
             'token': localStorage.getItem("token")
         }

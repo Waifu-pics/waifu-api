@@ -1,19 +1,19 @@
 {{define "upload"}}
-<!DOCTYPE html>
-<html>
+  <!DOCTYPE html>
+  <html>
 
-<head>
+  <head>
     {{template "meta" .}}
     <link rel="stylesheet" href="/static/css/upload.css">
-</head>
+  </head>
 
-<body>
+  <body>
   {{template "navbar" .}}
 
   <div>
     <div class="terminal-alert terminal-alert-primary" id="adminBox" style="text-align: center; max-width: 500px; margin: 0 auto; margin-top: 70px; visibility: hidden;">You are in admin mode, make sure you upload to the correct category. Post apprival is disabled for you!</div>
     <div class="terminal-alert" id="responseBox" style="text-align: center; max-width: 500px; margin: 0 auto; margin-top: -70px; visibility: hidden;"></div>
-  
+
     <div id="guidelineModal" class="modal">
 
       <!-- Modal content -->
@@ -26,7 +26,7 @@
         <p>4. No clearly underage appearing characters(nsfw), some are allowed but do not take it too far</p>
         <p>5. No illegal content, do not post anything that is deemed illegal by the US</p>
       </div>
-    
+
     </div>
 
     <div id="fileForm" class="centered" style="display: grid;">
@@ -35,9 +35,9 @@
 
       <div class="btn-group" style="margin: 0 auto;">
         <select onchange="reDefOpt();" class="btn btn-default btn-ghost" id="select" style="width: 120px; height: 40px;">
-        {{range .}}
+          {{range .}}
             <option>{{.}}</option>
-        {{end}}
+          {{end}}
         </select>
         <div id="zone" class="zone btn btn-primary btn-ghost" style="width: 155px; height: 40px;">File here!</div>
       </div>
@@ -45,9 +45,9 @@
     </div>
 
   </div>
-  
-  <script src="/static/scripts/upload.js"></script>
-</body>
 
-</html>
+  <script src="/static/scripts/upload.js"></script>
+  </body>
+
+  </html>
 {{end}}
