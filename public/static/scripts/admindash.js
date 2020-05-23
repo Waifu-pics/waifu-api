@@ -20,7 +20,7 @@ axios({
 
 function logout() {
     deleteCookie("token")
-    window.location.replace("/admin/login")
+    window.location.reload()
 }
 
 // Delete files
