@@ -13,17 +13,9 @@ import (
 
 // ListFile : listing all unverified files
 func (api API) ListFile(w http.ResponseWriter, r *http.Request) {
-	var responseData struct {
-		Token string `json:"token"`
-	}
+	token := r.Header.Get("token")
 
-	err := json.NewDecoder(r.Body).Decode(&responseData)
-	if err != nil {
-		web.WriteResp(w, 400, "Invalid JSON!")
-		return
-	}
-
-	count, _ := api.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": responseData.Token})
+	count, _ := api.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": token})
 	if count == 0 {
 		web.WriteResp(w, 400, "Invalid credentials!")
 		return
@@ -64,8 +56,9 @@ func (api API) VerifyFile(w http.ResponseWriter, r *http.Request) {
 	var responseData struct {
 		IsVerified bool   `json:"isVer"`
 		File       string `json:"file"`
-		Token      string `json:"token"`
 	}
+
+	token := r.Header.Get("token")
 
 	err := json.NewDecoder(r.Body).Decode(&responseData)
 	if err != nil {
@@ -73,7 +66,7 @@ func (api API) VerifyFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	count, _ := api.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": responseData.Token})
+	count, _ := api.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": token})
 	if count == 0 {
 		web.WriteResp(w, 400, "Invalid credentials!")
 		return

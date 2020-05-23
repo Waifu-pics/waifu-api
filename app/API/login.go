@@ -57,17 +57,9 @@ func (api API) AdminLogin(w http.ResponseWriter, r *http.Request) {
 
 // AdminVerify : check if the token is valid
 func (api API) AdminVerify(w http.ResponseWriter, r *http.Request) {
-	var responseData struct {
-		Token string `json:"token"`
-	}
+	token := r.Header.Get("token")
 
-	err := json.NewDecoder(r.Body).Decode(&responseData)
-	if err != nil {
-		web.WriteResp(w, 400, "Invalid JSON!")
-		return
-	}
-
-	count, _ := api.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": responseData.Token})
+	count, _ := api.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": token})
 	if count == 0 {
 		web.WriteResp(w, 400, "Invalid token!")
 		return

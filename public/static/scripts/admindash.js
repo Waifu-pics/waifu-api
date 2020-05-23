@@ -1,8 +1,8 @@
 axios({
     method: 'post',
     url: '/api/admin/list',
-    data: {
-        'token': getCookie("token"),
+    headers: {
+        "token": getCookie("token")
     }
 }).then(function (response) {
     if (response.data === null) return
@@ -32,9 +32,11 @@ $(document).on('click','.dlfl', function() {
         method: 'post',
         url: '/api/admin/verify',
         data: {
-            'token': getCookie("token"),
             'file': file,
             'isVer': false
+        },
+        headers: {
+            'token': getCookie("token")
         }
     }).then(function () {
         removeMsg = `This file has been deleted!`
@@ -49,9 +51,11 @@ $(document).on('click','.vfl', function() {
         method: 'post',
         url: '/api/admin/verify',
         data: {
-            'token': getCookie("token"),
             'file': file,
             'isVer': true
+        },
+        headers: {
+            'token': getCookie("token")
         }
     }).then(function() {
         removeMsg = `This file has been verified!`

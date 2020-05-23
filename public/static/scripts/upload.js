@@ -2,7 +2,7 @@ if (getCookie("token") != null) {
     axios({
         method: 'post',
         url: '/api/admin/token',
-        data: {
+        headers: {
             'token': getCookie("token")
         }
     }).then(function () {
