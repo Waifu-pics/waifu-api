@@ -16,6 +16,7 @@ import (
 func Router(mux *mux.Router, config config.Config, database *mongo.Database) *mux.Router {
 	front := Views.Front{Endpoints: config.ENDPOINTS}
 	endpoints := &api.API{Config: config, Database: database}
+	admin := &Views.Admin{Database: database}
 
 	// Execute this loop for every endpoint in config
 	for _, endP := range config.ENDPOINTS {
@@ -38,8 +39,7 @@ func Router(mux *mux.Router, config config.Config, database *mongo.Database) *mu
 	// Front end
 	mux.HandleFunc("/docs", front.Docs)
 	mux.HandleFunc("/upload", front.UploadFront)
-	mux.HandleFunc("/admin", Views.AdminLogin)
-	mux.HandleFunc("/admin/dash", Views.AdminDash)
+	mux.HandleFunc("/admin", admin.AdminPage)
 	mux.HandleFunc("/pages", front.Pages)
 
 	// Api stuff

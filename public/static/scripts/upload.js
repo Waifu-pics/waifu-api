@@ -1,16 +1,16 @@
-if (localStorage.getItem("token") != null) {
+if (getCookie("token") != null) {
     axios({
         method: 'post',
-        url: '/api/admin/verifytoken',
+        url: '/api/admin/token',
         data: {
-            'token': localStorage.getItem("token")
+            'token': getCookie("token")
         }
     }).then(function () {
-        zone.options.headers.token = localStorage.getItem("token")
+        zone.options.headers.token = getCookie("token")
         document.getElementById("adminBox").style.visibility = "visible"
         document.getElementById("responseBox").style.marginTop = "20px"
     }).catch(function () {
-        localStorage.removeItem("token")
+        deleteCookie("token")
     })
 }
 

@@ -1,9 +1,13 @@
 package Views
 
 import (
+	"context"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 	"html/template"
 	"net/http"
 	"waifu.pics/util/config"
+	"waifu.pics/util/web"
 )
 
 type Front struct {
@@ -13,6 +17,10 @@ type Front struct {
 type Multi struct {
 	Endpoint string
 	Config   config.Config
+}
+
+type Admin struct {
+	Database *mongo.Database
 }
 
 type grid struct {
@@ -66,25 +74,28 @@ func (front *Front) UploadFront(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 }
 
-// AdminLogin : Login page for admins
-func AdminLogin(w http.ResponseWriter, r *http.Request) {
+// AdminPage : Page for admins
+func (admin Admin) AdminPage(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles(
+		"public/templates/admin/dash.html",
 		"public/templates/admin/login.html",
 		"public/templates/partials/meta.html",
 		"public/templates/partials/navbar.html"))
 
-	t.ExecuteTemplate(w, "adminlogin", nil)
-	defer r.Body.Close()
-}
+	token, err := web.GetCookie(r.Cookies(), "token")
+	if err != nil {
+		t.ExecuteTemplate(w, "adminlogin", nil)
+		return
+	}
 
-// AdminDash : Admin dashboard page
-func AdminDash(w http.ResponseWriter, r *http.Request) {
-	t := template.Must(template.ParseFiles(
-		"public/templates/admin/dash.html",
-		"public/templates/partials/meta.html",
-		"public/templates/partials/navbar.html"))
+	count, _ := admin.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": token})
+	if count == 0 {
+		t.ExecuteTemplate(w, "adminlogin", nil)
+		return
+	}
 
 	t.ExecuteTemplate(w, "admindash", nil)
+
 	defer r.Body.Close()
 }
 

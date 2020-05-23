@@ -1,17 +1,3 @@
-if (localStorage.getItem("token") != null) {
-    axios({
-        method: 'post',
-        url: '/api/admin/token',
-        data: {
-            'token': localStorage.getItem("token")
-        }
-    }).then(function () {
-        window.location.replace("/admin/dash")
-    }).catch(function () {
-        localStorage.removeItem("token")
-    })
-}
-
 function tryLogin() {
     axios({
         method: 'post',
@@ -21,8 +7,8 @@ function tryLogin() {
             'password': document.getElementById("passwordField").value
         }
     }).then(function (data) {
-        localStorage.setItem('token', data.data)
-        window.location.replace("/admin/dash")
+        createCookie("token", data.data)
+        window.location.reload()
     }).catch(function (data) {
         let resBox = document.getElementById("responseBox")
         resBox.style.visibility = "visible"

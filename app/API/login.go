@@ -3,7 +3,6 @@ package api
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"waifu.pics/util/crypto"
 	"waifu.pics/util/web"
@@ -24,9 +23,6 @@ func (api API) AdminLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(responseData.Username)
-	fmt.Println(responseData.Password)
-
 	count, _ := api.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"username": responseData.Username})
 	if count == 0 {
 		web.WriteResp(w, 400, "Incorrect credentials!")
@@ -46,7 +42,6 @@ func (api API) AdminLogin(w http.ResponseWriter, r *http.Request) {
 	authValid, err := crypto.ComparePassword(responseData.Password, queryUser.Password)
 	if err != nil {
 		web.WriteResp(w, 400, "Error!")
-		fmt.Println(err)
 		return
 	}
 
