@@ -15,10 +15,12 @@ if (getCookie("token") != null) {
 }
 
 function reDefOpt() {
-    zone.options.headers.type = $("#select option:selected").text().toLowerCase()
+    zone.options.headers.type = selector.options[selector.selectedIndex].text
 }
 
-var zone = new Dropzone("#zone", {
+let selector = document.getElementById("select")
+
+let zone = new Dropzone("#zone", {
     url: "/api/upload",
     paramName: "uploadFile",
 
@@ -26,20 +28,20 @@ var zone = new Dropzone("#zone", {
     timeout: 0,
 
     headers: {
-        'type': $("#select option:selected").text().toLowerCase(),
+        'type': selector.options[selector.selectedIndex].text,
         'token': null
     },
 
     init: function () {
         this.on("success", function () {
-                unHide("success")
-                document.getElementById('responseBox').innerHTML = `File was successfully uploaded`
-            }),
+            unHide("success")
+            document.getElementById('responseBox').innerHTML = `File was successfully uploaded`
+        })
 
-            this.on("error", function (data) {
-                unHide("error")
-                document.getElementById('responseBox').innerHTML = `${data.xhr.response}`
-            })
+        this.on("error", function (data) {
+            unHide("error")
+            document.getElementById('responseBox').innerHTML = `${data.xhr.response}`
+        })
     }
 
 })
@@ -47,7 +49,7 @@ var zone = new Dropzone("#zone", {
 function unHide(resType) {
     let resBox = document.getElementById("responseBox")
 
-    if (resType == "success") {
+    if (resType === "success") {
         resBox.classList.add("terminal-alert-primary")
         resBox.style.visibility = "visible"
         deleteBox("success")
@@ -60,7 +62,7 @@ function unHide(resType) {
     function deleteBox(resType) {
         setTimeout(function () {
             resBox.style.visibility = "hidden"
-            if (resType == "success") {
+            if (resType === "success") {
                 resBox.classList.remove("terminal-alert-primary")
             } else {
                 resBox.classList.remove("terminal-alert-error")
@@ -85,7 +87,7 @@ span.onclick = function () {
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
-    if (event.target == modal) {
+    if (event.target === modal) {
         modal.style.display = "none";
     }
 }

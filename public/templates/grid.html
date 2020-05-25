@@ -20,10 +20,10 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
 
-    <!-- Server rendering lmao -->
-    <p id="URL" style="visibility: hidden;">{{ .URL }}</p>
-    <p id="Endpoint" style="visibility: hidden;">{{ .Endpoint }}</p>
-
+    <script>
+        const Root = {{ .URL }}
+        const Endpoint = {{ .Endpoint }}
+    </script>
     <script src="/static/scripts/grid.js"></script>
     </body>
     </html>

@@ -7,14 +7,18 @@ axios({
 }).then(function (response) {
     if (response.data === null) return
     response.data.map( ({File, Type}, index) => {
-        $("#efs").append(`
-                <div id="${index}">
-                <th><p style="display: inline; color: #7a7a7a;">${Type}</p></th>
-                <th><a style="color: #8a8a8a" href="https://i.waifu.pics/${File}">${File}</a></th>
-                <th><a filename="${File}" id="${index}" style="color: var(--error-color);" class="dlfl">Delete</a></th>
-                <th><a filename="${File}" id="${index}" style="color: var(--primary-color);" class="vfl">Verify</a></th>
-                </div>
-                `)
+        let listElem = document.createElement("div")
+        listElem.id = index.toString()
+        listElem.innerHTML = `
+            <th><p style="display: inline; color: #7a7a7a;">${Type}</p></th>
+            <th><a style="color: #8a8a8a" href="https://i.waifu.pics/${File}">${File}</a></th>
+            <th><a filename="${File}" id="${index}" style="color: var(--error-color);" class="deleteFile">Delete</a></th>
+            <th><a filename="${File}" id="${index}" style="color: var(--primary-color);" class="verifyFile">Verify</a></th>
+        `
+
+        document.getElementById("pendingList").appendChild(listElem)
+
+        setClickListener()
     })
 })
 
@@ -23,42 +27,48 @@ function logout() {
     window.location.reload()
 }
 
-// Delete files
-$(document).on('click','.dlfl', function() {
-    let id = $(this).attr('id')
-    let file = $(this).attr('filename')
-    // make delete request with id
-    axios({
-        method: 'post',
-        url: '/api/admin/verify',
-        data: {
-            'file': file,
-            'isVer': false
-        },
-        headers: {
-            'token': getCookie("token")
+function setClickListener() {
+    // Delete file
+    let deleteButtons = document.getElementsByClassName("deleteFile")
+    for(let i = 0, x = deleteButtons.length; i < x; i++) {
+        deleteButtons[i].onclick = () => {
+            let id = deleteButtons[i].getAttribute("id")
+            let file = deleteButtons[i].getAttribute("filename")
+            axios({
+                method: 'post',
+                url: '/api/admin/verify',
+                data: {
+                    'file': file,
+                    'isVer': false
+                },
+                headers: {
+                    'token': getCookie("token")
+                }
+            }).then(function () {
+                document.getElementById(id).innerHTML = "This file has been deleted!"
+            })
         }
-    }).then(function () {
-        removeMsg = `This file has been deleted!`
-        document.getElementById(id).innerHTML = removeMsg
-    })
-})
+    }
 
-$(document).on('click','.vfl', function() {
-    let id = $(this).attr('id')
-    let file = $(this).attr('filename')
-    axios({
-        method: 'post',
-        url: '/api/admin/verify',
-        data: {
-            'file': file,
-            'isVer': true
-        },
-        headers: {
-            'token': getCookie("token")
+    // Verify file
+    let verifyButtons = document.getElementsByClassName("verifyFile")
+    for(let i = 0, x = verifyButtons.length; i < x; i++) {
+        verifyButtons[i].onclick = () => {
+            let id = verifyButtons[i].getAttribute("id")
+            let file = verifyButtons[i].getAttribute("filename")
+            axios({
+                method: 'post',
+                url: '/api/admin/verify',
+                data: {
+                    'file': file,
+                    'isVer': true
+                },
+                headers: {
+                    'token': getCookie("token")
+                }
+            }).then(function () {
+                document.getElementById(id).innerHTML = "This file has been verified!"
+            })
         }
-    }).then(function() {
-        removeMsg = `This file has been verified!`
-        document.getElementById(id).innerHTML = removeMsg
-    })
-})
+    }
+}

@@ -1,43 +1,55 @@
-let URL = document.getElementById("URL").innerHTML
-let ENDPOINT = document.getElementById("Endpoint").innerHTML
+scrollTop()
 
-// Scroll to top on load
-$(this).scrollTop(0)
-
-$(document).on('click','#relBtn', function() {
-    $("#photos").empty()
+document.getElementById("relBtn").onclick = () => {
+    document.getElementById("photos").innerHTML = ""
     getMore()
-    $(this).scrollTop(0)
-})
+    scrollTop()
+}
 
-let exclude = []
+function scrollTop() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+}
+
+let exclude = [] // Exclude array for pagination
+
+// Original request on load
 axios({
     method: 'post',
-    url: '/api/many/' + ENDPOINT
+    url: '/api/many/' + Endpoint
 }).then((response) => {
     response.data.data.map(function(file) {
-        $("#photos").append(`<img src="${URL + file}" alt="">`)
+        // Create the image element
+        let image = document.createElement("img")
+        image.src = Root + file
+
+        document.getElementById("photos").appendChild(image)
         exclude.push(file)
     })
 })
 
-const getMore = () => {
+// Request for nextpage
+function getMore() {
     axios({
         method: 'post',
-        url: '/api/many/' + ENDPOINT,
+        url: '/api/many/' + Endpoint,
         data: {
             exclude: exclude
         }
     }).then((response) => {
         response.data.data.map(function(file) {
-            $("#photos").append(`<img src="${URL + file}" alt="">`)
+            // Create the image element
+            let image = document.createElement("img")
+            image.src = Root + file
+
+            document.getElementById("photos").appendChild(image)
             exclude.push(file)
         })
-        if (response.data.data.length == 0) {
-            console.log("end")
-            $("#endMsg").text("You have reached the end!")
-            $("#endMsg").addClass("centered")
-            $("#relBtn").remove()
+        if (response.data.data.length === 0) {
+            let errorMsg = document.getElementById("endMsg")
+            errorMsg.innerHTML = "You have reached the end!"
+            errorMsg.classList.add("centered")
+            document.getElementById("relBtn").remove()
         }
     })
 }

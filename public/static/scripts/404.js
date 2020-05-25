@@ -1,3 +1,3 @@
-$(document).on('click','.404btn', function() {
-    window.location.replace("/");
-})
+document.getElementById("404btn").onclick = () => {
+    window.location.replace("/")
+}
