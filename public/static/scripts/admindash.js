@@ -18,8 +18,8 @@ axios({
 
         document.getElementById("pendingList").appendChild(listElem)
 
-        setClickListener()
     })
+    setClickListener()
 })
 
 function logout() {
