@@ -29,7 +29,7 @@ function logout() {
 
 function setClickListener() {
     // Delete file
-    let deleteButtons = document.getElementsByClassName("deleteFile")
+    let deleteButtons = document.querySelectorAll(".deleteFile")
     for(let i = 0, x = deleteButtons.length; i < x; i++) {
         deleteButtons[i].onclick = () => {
             let id = deleteButtons[i].getAttribute("id")
@@ -51,7 +51,7 @@ function setClickListener() {
     }
 
     // Verify file
-    let verifyButtons = document.getElementsByClassName("verifyFile")
+    let verifyButtons = document.querySelectorAll(".verifyFile")
     for(let i = 0, x = verifyButtons.length; i < x; i++) {
         verifyButtons[i].onclick = () => {
             let id = verifyButtons[i].getAttribute("id")
