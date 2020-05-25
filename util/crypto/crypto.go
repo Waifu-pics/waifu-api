@@ -68,5 +68,5 @@ func ComparePassword(password, hash string) (bool, error) {
 
 	comparisonHash := argon2.Key([]byte(password), salt, c.time, c.memory, c.threads, c.keyLen)
 
-	return (subtle.ConstantTimeCompare(decodedHash, comparisonHash) == 1), nil
+	return subtle.ConstantTimeCompare(decodedHash, comparisonHash) == 1, nil
 }

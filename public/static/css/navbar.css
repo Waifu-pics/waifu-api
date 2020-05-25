@@ -3,7 +3,6 @@
     background-color: #303031;
     overflow: hidden;
     top: 0;
-    position: fixed;
     width: 100%;
 }
 
@@ -27,4 +26,46 @@
 .topnav a.active {
     background-color: #2896d6;
     color: white;
+}
+
+.topnav a.icon {
+    display: none;
+}
+
+@media only screen and (max-width: 500px) {
+    .topnav {
+        position: relative;
+    }
+
+    .topnav a.active {
+        background-color: #3a3a3a;
+        color: white;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    #HOMETAB span {
+        display: none;
+    }
+
+    #HOMETAB:after {
+        content: "WAIFU.PICS";
+    }
+
+    /* Style navigation menu links */
+    .topnav a {
+        padding: 13px 16px;
+        display: block;
+    }
+
+    /* Style the hamburger menu */
+    .topnav a.icon {
+        background: #2896d6;
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
 }

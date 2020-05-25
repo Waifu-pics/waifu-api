@@ -4,12 +4,24 @@
 
 <head>
     {{template "meta" .}}
+    <style>
+        .terminal-card {
+            width: 500px;
+            text-align: center;
+        }
+        @media only screen and (max-width: 500px) {
+            .terminal-card {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 
 <body>
     {{template "navbar" .}}
     <div class="centered">
-        <div style="width: 500px; text-align: center;" class="terminal-card">
+        <div class="terminal-card">
             <header>API Docs</header>
             <div>Hello and welcome to waifu.pics!<br>This is the api/site for high quality waifu images.<br>Below is some information on how to use the API!</div>
             <div style="margin-bottom: 20px;"><br>Below are the image endpoints.<br>

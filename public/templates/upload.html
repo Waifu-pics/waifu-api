@@ -8,11 +8,10 @@
   </head>
 
   <body>
-  {{template "navbar" .}}
-
+    {{template "navbar" .}}
   <div>
-    <div class="terminal-alert terminal-alert-primary" id="adminBox" style="text-align: center; max-width: 500px; margin: 0 auto; margin-top: 70px; visibility: hidden;">You are in admin mode, make sure you upload to the correct category. Post apprival is disabled for you!</div>
-    <div class="terminal-alert" id="responseBox" style="text-align: center; max-width: 500px; margin: 0 auto; margin-top: -70px; visibility: hidden;"></div>
+    <div class="terminal-alert terminal-alert-primary" id="adminBox" style="margin-top: 30px;">You are in admin mode, make sure you upload to the correct category. Post approval is disabled!</div>
+    <div class="terminal-alert" id="responseBox" style="margin-top: -70px;"></div>
 
     <div id="guidelineModal" class="modal">
 

@@ -4,7 +4,12 @@
 
     <head>
         {{template "meta" .}}
-        <link rel="stylesheet" href="/static/css/pages.css">
+        <style>
+            .btn {
+                width: 150px;
+                margin-bottom: 15px;
+            }
+        </style>
     </head>
 
     <body>
@@ -22,7 +27,15 @@
         </div>
     </div>
 
-    <script src="/static/scripts/pages.js"></script>
+    <script>
+        function gotoPage(param) {
+            if (param === "sfw") {
+                window.location.replace(`/`)
+                return
+            }
+            window.location.replace(`/${param}`)
+        }
+    </script>
     </body>
     </html>
 {{end}}

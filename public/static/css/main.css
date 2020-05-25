@@ -29,12 +29,3 @@ html {
     left: 50%;
     transform: translate(-50%, -50%);
 }
-
-.tabcontent {
-    padding: 6px 12px;
-    border: 1px solid #FFF;
-    max-width: 400px;
-    margin:auto auto;
-    margin-bottom: 10px;
-    margin-top: 10px;
-}

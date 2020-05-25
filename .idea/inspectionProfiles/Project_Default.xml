@@ -25,6 +25,7 @@
         <method importPath="go.mongodb.org/mongo-driver/mongo" receiver="*Collection" name="UpdateOne" />
         <method importPath="go.mongodb.org/mongo-driver/mongo" receiver="*Collection" name="DeleteOne" />
         <method importPath="encoding/json" receiver="*Decoder" name="Decode" />
+        <method importPath="os" receiver="*File" name="Close" />
       </methods>
     </inspection_tool>
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
