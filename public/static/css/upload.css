@@ -43,6 +43,7 @@
     max-width: 500px;
     margin: 0 auto;
     visibility: hidden;
+    z-index: 1;
 }
 
 @media only screen and (max-width: 500px) {
