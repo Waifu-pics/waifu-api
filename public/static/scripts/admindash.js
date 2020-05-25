@@ -11,7 +11,7 @@ axios({
         listElem.id = index.toString()
         listElem.innerHTML = `
             <th><p style="display: inline; color: #7a7a7a;">${Type}</p></th>
-            <th><a style="color: #8a8a8a" href="https://i.waifu.pics/${File}">${File}</a></th>
+            <th><a style="color: #8a8a8a" href="${Root}${File}">${File}</a></th>
             <th><a filename="${File}" id="${index}" style="color: var(--error-color);" class="deleteFile">Delete</a></th>
             <th><a filename="${File}" id="${index}" style="color: var(--primary-color);" class="verifyFile">Verify</a></th>
         `

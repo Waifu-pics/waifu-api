@@ -16,8 +16,11 @@
             <button style="margin-top: -20px;" id="404btn" class="btn btn-primary btn-ghost">Go home!</button>
         </div>
     </div>
-    <script src="/static/scripts/404.js"></script>
+    <script>
+        document.getElementById("404btn").onclick = () => {
+            window.location.replace("/")
+        }
+    </script>
     </body>
-
     </html>
 {{end}}

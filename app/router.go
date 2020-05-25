@@ -16,14 +16,14 @@ import (
 func Router(mux *mux.Router, config config.Config, database *mongo.Database) *mux.Router {
 	front := Views.Front{Endpoints: config.ENDPOINTS}
 	endpoints := &api.API{Config: config, Database: database}
-	admin := &Views.Admin{Database: database}
+	admin := &Views.Admin{Database: database, Config: config}
 
 	// Execute this loop for every endpoint in config
 	for _, endP := range config.ENDPOINTS {
 		endpoint := endP // Evaluates instantly
 
-		apiMulti := api.Multi{Endpoint: endpoint, API: endpoints}     // Views Multi function
-		viewsMulti := Views.Multi{Endpoint: endpoint, Config: config} // API Multi function
+		apiMulti := api.Multi{Endpoint: endpoint, API: endpoints}     // Views Multi struct
+		viewsMulti := Views.Multi{Endpoint: endpoint, Config: config} // API Multi struct
 
 		mux.HandleFunc("/api/"+endpoint, apiMulti.GetImage).Methods("GET")
 		mux.HandleFunc("/api/many/"+endpoint, apiMulti.GetManyImage).Methods("POST")

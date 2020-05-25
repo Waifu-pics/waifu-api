@@ -53,6 +53,14 @@ func (api API) UploadHandle(w http.ResponseWriter, r *http.Request) {
 	var uplFileName = freq.Filename
 	var filename = randomString(7) + "." + getExtension(uplFileName)
 
+	allowedTypes := []string{"image/jpeg", "image/png", "image/x-png"}
+
+	// Check if file is actually an image
+	if !findInSlice(allowedTypes, mimeType) || !findInSlice(allowedTypes, http.DetectContentType(buf.Bytes())) {
+		web.WriteResp(w, 400, "File is not an image!")
+		return
+	}
+
 	count, _ := api.Database.Collection("uploads").CountDocuments(context.TODO(), bson.M{"md5": hash})
 	if count > 0 {
 		web.WriteResp(w, 400, "File already exists!")

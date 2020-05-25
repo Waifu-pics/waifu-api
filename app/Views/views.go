@@ -21,6 +21,7 @@ type Multi struct {
 
 type Admin struct {
 	Database *mongo.Database
+	Config   config.Config
 }
 
 type grid struct {
@@ -94,7 +95,7 @@ func (admin Admin) AdminPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	t.ExecuteTemplate(w, "admindash", nil)
+	t.ExecuteTemplate(w, "admindash", admin.Config.URL)
 
 	defer r.Body.Close()
 }
