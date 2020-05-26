@@ -21,7 +21,7 @@ func main() {
 	if len(os.Args) > 1 {
 		arg := os.Args[1]
 		if arg == "createAdmin" {
-			admin.CreateAdmin(db, cfg)
+			admin.CreateAdmin(db)
 			return
 		}
 	}

@@ -8,11 +8,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"log"
 	"os"
-	"waifu.pics/util/config"
 	"waifu.pics/util/crypto"
 )
 
-func CreateAdmin(database *mongo.Database, config config.Config) {
+func CreateAdmin(database *mongo.Database) {
 	ui := &input.UI{
 		Writer: os.Stdout,
 		Reader: os.Stdin,
