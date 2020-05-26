@@ -18,10 +18,12 @@ func main() {
 	db := database.InitDB(cfg)
 
 	// Admin creation argument
-	arg := os.Args[1]
-	if arg == "createAdmin" {
-		admin.CreateAdmin(db, cfg)
-		return
+	if len(os.Args) > 1 {
+		arg := os.Args[1]
+		if arg == "createAdmin" {
+			admin.CreateAdmin(db, cfg)
+			return
+		}
 	}
 
 	file.InitS3(cfg)
