@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"waifu.pics/util/config"
 
@@ -15,5 +16,10 @@ func main() {
 	cfg := config.LoadConfig("config.json")
 	db := database.InitDB(cfg)
 	file.InitS3(cfg)
-	http.ListenAndServe(":"+cfg.PORT, app.Router(mux.NewRouter(), cfg, db))
+
+	err := http.ListenAndServe(":"+cfg.PORT, app.Router(mux.NewRouter(), cfg, db))
+
+	if err != nil {
+		log.Fatal("Unable to start the web server!")
+	}
 }
