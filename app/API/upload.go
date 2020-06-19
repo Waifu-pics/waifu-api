@@ -5,12 +5,13 @@ import (
 	"context"
 	"crypto/md5"
 	"encoding/hex"
-	"go.mongodb.org/mongo-driver/bson"
 	"io"
 	"math/rand"
 	"net/http"
 	"strings"
 	"time"
+
+	"go.mongodb.org/mongo-driver/bson"
 	"waifu.pics/util/file"
 	"waifu.pics/util/web"
 )
@@ -53,7 +54,7 @@ func (api API) UploadHandle(w http.ResponseWriter, r *http.Request) {
 	var uplFileName = freq.Filename
 	var filename = randomString(7) + "." + getExtension(uplFileName)
 
-	allowedTypes := []string{"image/jpeg", "image/png", "image/x-png"}
+	allowedTypes := []string{"image/jpeg", "image/png", "image/x-png", "image/gif"}
 
 	// Check if file is actually an image
 	if !findInSlice(allowedTypes, mimeType) || !findInSlice(allowedTypes, http.DetectContentType(buf.Bytes())) {
