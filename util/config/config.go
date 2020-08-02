@@ -10,6 +10,7 @@ import (
 type Config struct {
 	URL  string `json:"URL"`
 	PORT string `json:"PORT"`
+	JWT  string `json:"JWT"`
 	DB   struct {
 		URL    string `json:"URL"`
 		DBNAME string `json:"DBNAME"`

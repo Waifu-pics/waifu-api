@@ -2,26 +2,28 @@ package api
 
 import (
 	"bytes"
-	"context"
 	"crypto/md5"
 	"encoding/hex"
 	"io"
-	"math/rand"
 	"net/http"
-	"strings"
-	"time"
 
-	"go.mongodb.org/mongo-driver/bson"
+	"github.com/gorilla/context"
+	"waifu.pics/util/database"
 	"waifu.pics/util/file"
 	"waifu.pics/util/web"
 )
 
-// UploadHandle : Handle uploads to the API
-func (api API) UploadHandle(w http.ResponseWriter, r *http.Request) {
-	const uploadSize int64 = 30 * 1000 * 1000
+const (
+	uploadSize int64 = 30 * 1000 * 1000
+)
 
+var (
+	allowedTypes = []string{"image/jpeg", "image/png", "image/x-png", "image/gif"}
+)
+
+func (api API) UploadHandle(w http.ResponseWriter, r *http.Request) {
 	resType := r.Header.Get("type")
-	resToken := r.Header.Get("token")
+	isAdmin := context.Get(r, "authbool").(bool)
 
 	if !findInSlice(api.Config.ENDPOINTS, resType) {
 		web.WriteResp(w, 400, "Invalid type!")
@@ -54,26 +56,37 @@ func (api API) UploadHandle(w http.ResponseWriter, r *http.Request) {
 	var uplFileName = freq.Filename
 	var filename = randomString(7) + "." + getExtension(uplFileName)
 
-	allowedTypes := []string{"image/jpeg", "image/png", "image/x-png", "image/gif"}
-
 	// Check if file is actually an image
 	if !findInSlice(allowedTypes, mimeType) || !findInSlice(allowedTypes, http.DetectContentType(buf.Bytes())) {
 		web.WriteResp(w, 400, "File is not an image!")
 		return
 	}
 
-	count, _ := api.Database.Collection("uploads").CountDocuments(context.TODO(), bson.M{"md5": hash})
-	if count > 0 {
+	err = api.Database.CreateFileInDB(filename, hash, resType, isAdmin)
+
+	switch err {
+	case nil:
+		break
+	case database.ErrorMD5Exists:
 		web.WriteResp(w, 400, "File already exists!")
 		return
-	}
-
-	// Check if filename exists and roll until its unique
-	filter := bson.M{"file": filename}
-	count, _ = api.Database.Collection("uploads").CountDocuments(context.TODO(), filter)
-	for count > 0 {
-		filename = randomString(7) + "." + getExtension(uplFileName)
-		count, _ = api.Database.Collection("uploads").CountDocuments(context.TODO(), filter)
+	case database.ErrorFileNameExists:
+		var iter = 0
+		for err != nil && iter < 10 {
+			err = api.Database.CreateFileInDB(filename, hash, resType, false)
+			if err != database.ErrorFileNameExists {
+				web.WriteResp(w, 500, "Error")
+				return
+			}
+			iter++
+			if iter == 9 {
+				web.WriteResp(w, 500, "Error")
+				return
+			}
+		}
+	default:
+		web.WriteResp(w, 500, "Error")
+		return
 	}
 
 	// Actually upload file with S3
@@ -83,52 +96,7 @@ func (api API) UploadHandle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Check if user is an admin to skip verification
-	if resToken != "" {
-		count, _ = api.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": resToken})
-		if count != 0 {
-			api.Database.Collection("uploads").InsertOne(context.TODO(), bson.M{"file": filename, "verified": true, "md5": hash, "type": resType})
-			return
-		}
-	}
-
-	_, err = api.Database.Collection("uploads").InsertOne(context.TODO(), bson.M{"file": filename, "verified": false, "md5": hash, "type": resType})
-	if err != nil {
-		_ = file.DeleteFile(filename, api.Config)
-	}
-
 	web.WriteResp(w, 200, "File uploaded!")
 
 	defer r.Body.Close()
-}
-
-func getExtension(text string) string {
-	pos := strings.Index(text, ".")
-	if pos == -1 {
-		return ""
-	}
-	adjustedPos := pos + len(".")
-	if adjustedPos >= len(text) {
-		return ""
-	}
-	return text[adjustedPos:]
-}
-
-func randomString(length int) string {
-	seededRand := rand.New(rand.NewSource(time.Now().UnixNano()))
-	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_~"
-	b := make([]byte, length)
-	for i := range b {
-		b[i] = charset[seededRand.Intn(len(charset))]
-	}
-	return string(b)
-}
-
-func findInSlice(slice []string, val string) bool {
-	for _, item := range slice {
-		if item == val {
-			return true
-		}
-	}
-	return false
 }

@@ -1,58 +1,50 @@
 package app
 
 import (
-	"net/http"
-	"waifu.pics/util/config"
-
-	"go.mongodb.org/mongo-driver/mongo"
-	"waifu.pics/app/Views"
-
-	"github.com/gorilla/mux"
-
 	api "waifu.pics/app/API"
+	"waifu.pics/app/auth"
+	"waifu.pics/util/config"
+	"waifu.pics/util/database"
+
+	"github.com/go-chi/chi"
+	"github.com/go-chi/cors"
 )
 
 // Router : Init router function
-func Router(mux *mux.Router, config config.Config, database *mongo.Database) *mux.Router {
-	front := Views.Front{Endpoints: config.ENDPOINTS}
+func Router(config config.Config, database database.Database) *chi.Mux {
+	r := chi.NewRouter()
 	endpoints := &api.API{Config: config, Database: database}
-	admin := &Views.Admin{Database: database, Config: config}
+	mw := &auth.Middleware{Config: config}
+
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins: []string{"*"},
+	}))
+
+	r.Get("/api/endpoints", endpoints.GetEndpoints)
+
+	r.Group(func(r chi.Router) {
+		r.Use(mw.VerifySubtle)
+
+		r.Post("/api/login", endpoints.Login)
+		r.Post("/api/upload", endpoints.UploadHandle)
+	})
+
+	r.Group(func(r chi.Router) {
+		r.Use(mw.Verify)
+
+		r.Post("/api/admin/verify", endpoints.VerifyFile)
+		r.Post("/api/admin/list", endpoints.ListFile)
+	})
 
 	// Execute this loop for every endpoint in config
 	for _, endP := range config.ENDPOINTS {
 		endpoint := endP // Evaluates instantly
 
-		apiMulti := api.Multi{Endpoint: endpoint, API: endpoints}     // Views Multi struct
-		viewsMulti := Views.Multi{Endpoint: endpoint, Config: config} // API Multi struct
+		apiMulti := api.Multi{Endpoint: endpoint, API: endpoints}
 
-		mux.HandleFunc("/api/"+endpoint, apiMulti.GetImage).Methods("GET")
-		mux.HandleFunc("/api/many/"+endpoint, apiMulti.GetManyImage).Methods("POST")
-
-		switch endpoint {
-		case "sfw":
-			mux.HandleFunc("/", viewsMulti.Grid)
-		default:
-			mux.HandleFunc("/"+endpoint, viewsMulti.Grid)
-		}
+		r.Get("/api/"+endpoint, apiMulti.GetImage)
+		r.Post("/api/many/"+endpoint, apiMulti.GetManyImage)
 	}
 
-	// Front end
-	mux.HandleFunc("/docs", front.Docs)
-	mux.HandleFunc("/upload", front.UploadFront)
-	mux.HandleFunc("/admin", admin.AdminPage)
-	mux.HandleFunc("/pages", front.Pages)
-
-	// Api stuff
-	mux.HandleFunc("/api/upload", endpoints.UploadHandle).Methods("POST")
-	mux.HandleFunc("/api/admin/login", endpoints.AdminLogin).Methods("POST")
-	mux.HandleFunc("/api/admin/token", endpoints.AdminVerify).Methods("POST")
-	mux.HandleFunc("/api/admin/list", endpoints.ListFile).Methods("POST")
-	mux.HandleFunc("/api/admin/verify", endpoints.VerifyFile).Methods("POST")
-	mux.HandleFunc("/api/endpoints", endpoints.GetEndpoints).Methods("GET")
-
-	// Other important things
-	mux.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("public/static/"))))
-	mux.NotFoundHandler = mux.NewRoute().HandlerFunc(Views.Error404).GetHandler()
-
-	return mux
+	return r
 }

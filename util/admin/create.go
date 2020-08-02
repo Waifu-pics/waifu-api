@@ -1,17 +1,16 @@
 package admin
 
 import (
-	"context"
 	"fmt"
-	"github.com/tcnksm/go-input"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
 	"log"
 	"os"
+
+	"github.com/tcnksm/go-input"
 	"waifu.pics/util/crypto"
+	"waifu.pics/util/database"
 )
 
-func CreateAdmin(database *mongo.Database) {
+func CreateAdmin(database database.Database) {
 	ui := &input.UI{
 		Writer: os.Stdout,
 		Reader: os.Stdin,
@@ -32,7 +31,7 @@ func CreateAdmin(database *mongo.Database) {
 		log.Fatal("Unable to hash password!")
 	}
 
-	_, err = database.Collection("admins").InsertOne(context.TODO(), bson.M{"username": username, "password": passwordHashed, "token": crypto.GenUUID()})
+	err = database.CreateAdmin(username, passwordHashed)
 	if err != nil {
 		log.Fatal("Unable to create admin!")
 	}

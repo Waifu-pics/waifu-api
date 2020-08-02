@@ -1,99 +1,93 @@
 package api
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
+
 	"waifu.pics/util/file"
 	"waifu.pics/util/web"
-
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // ListFile : listing all unverified files
 func (api API) ListFile(w http.ResponseWriter, r *http.Request) {
-	token := r.Header.Get("token")
+	endpoint := r.Header.Get("endpoint")
 
-	count, _ := api.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": token})
-	if count == 0 {
-		web.WriteResp(w, 400, "Invalid credentials!")
+	var res struct {
+		Endpoint string `json:"endpoint"`
+		Verified bool   `json:"verified"`
+	}
+
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&res)
+	if err != nil {
+		web.WriteResp(w, 500, "Error")
 		return
 	}
 
-	matchStage := bson.D{{
-		Key: "$match", Value: bson.D{
-			{Key: "verified", Value: false},
-		},
-	}}
-
-	sortStage := bson.D{{
-		Key: "$sort", Value: bson.D{
-			{Key: "_id", Value: -1},
-		},
-	}}
-
-	mongoRes, _ := api.Database.Collection("uploads").Aggregate(context.TODO(), mongo.Pipeline{matchStage, sortStage})
-
-	var dumpRes []struct {
-		File string `bson:"file,omitempty"`
-		Type string `bson:"type,omitempty"`
-	}
-
-	if err := mongoRes.All(context.TODO(), &dumpRes); err != nil {
+	if !findInSlice(api.Config.ENDPOINTS, endpoint) {
+		web.WriteResp(w, 400, "Invalid type!")
 		return
 	}
 
-	response, _ := json.Marshal(dumpRes)
+	files, err := api.Database.GetFilesAdmin(res.Endpoint, res.Verified)
+	if err != nil {
+		web.WriteResp(w, 500, "Error")
+		return
+	}
 
-	web.WriteResp(w, 200, string(response))
+	var response struct {
+		Verified bool     `json:"verified"`
+		Files    []string `json:"files"`
+	}
+
+	response.Verified = res.Verified
+	response.Files = files
+
+	jsonres, err := json.Marshal(response)
+	if err != nil {
+		web.WriteResp(w, 500, "Error")
+		return
+	}
+
+	web.WriteResp(w, 200, string(jsonres))
 
 	defer r.Body.Close()
 }
 
 // VerifyFile : Verifying user uploads
 func (api API) VerifyFile(w http.ResponseWriter, r *http.Request) {
-	var responseData struct {
-		IsVerified bool   `json:"isVer"`
-		File       string `json:"file"`
+	var res struct {
+		Verified bool   `json:"verified"`
+		File     string `json:"file"`
 	}
 
-	token := r.Header.Get("token")
-
-	err := json.NewDecoder(r.Body).Decode(&responseData)
+	err := json.NewDecoder(r.Body).Decode(&res)
 	if err != nil {
 		web.WriteResp(w, 400, "Invalid JSON!")
 		return
 	}
 
-	count, _ := api.Database.Collection("admins").CountDocuments(context.TODO(), bson.M{"token": token})
-	if count == 0 {
-		web.WriteResp(w, 400, "Invalid credentials!")
-		return
-	}
+	defer r.Body.Close()
 
-	count, _ = api.Database.Collection("uploads").CountDocuments(context.TODO(), bson.M{"file": responseData.File})
-	if count == 0 {
-		web.WriteResp(w, 400, "Invalid file!")
-		return
-	}
-
-	filter := bson.M{"file": responseData.File}
-
-	if responseData.IsVerified == true {
-		update := bson.M{"$set": bson.M{"verified": true}}
-		api.Database.Collection("uploads").UpdateOne(context.TODO(), filter, update)
-
+	if res.Verified {
+		err = api.Database.VerifyFile(res.File)
+		if err != nil {
+			web.WriteResp(w, 400, "File could not be verified!")
+			return
+		}
 		web.WriteResp(w, 200, "File has been verified!")
+		return
 	} else {
-		if err := file.DeleteFile(responseData.File, api.Config); err != nil {
+		err = api.Database.DeleteFile(res.File)
+		if err != nil {
 			web.WriteResp(w, 400, "File could not be deleted!")
 			return
 		}
-		api.Database.Collection("uploads").DeleteOne(context.TODO(), filter)
-
-		web.WriteResp(w, 200, "File has been Deleted")
+		if err := file.DeleteFile(res.File, api.Config); err != nil {
+			web.WriteResp(w, 400, "File could not be deleted!")
+			return
+		}
+		web.WriteResp(w, 400, "File has been Deleted")
+		return
 	}
-
-	defer r.Body.Close()
 }

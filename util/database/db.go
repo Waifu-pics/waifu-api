@@ -1,30 +1,19 @@
 package database
 
 import (
-	"context"
+	"database/sql"
 	"log"
-	"time"
+
 	"waifu.pics/util/config"
 
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	_ "github.com/go-sql-driver/mysql" // MySQL
 )
 
-// InitDB : Mongo Initializer
-func InitDB(config config.Config) *mongo.Database {
-	client, err := mongo.NewClient(options.Client().ApplyURI(config.DB.URL))
+// InitSQL : MySQL Initializer
+func InitSQL(config config.Config) Database {
+	db, err := sql.Open("mysql", config.DB.URL)
 	if err != nil {
-		log.Fatal(err)
+		log.Panicln("Error: " + err.Error())
 	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	err = client.Connect(ctx)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return client.Database(config.DB.DBNAME)
+	return Database{db: db}
 }
