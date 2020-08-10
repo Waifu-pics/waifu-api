@@ -16,14 +16,22 @@ export default {
       images: [],
     }
   },
-  mounted: function() {
+  watch: {
+    '$route.params.endpoint' () {
+      this.exclude = []
+      this.getImages()
+    },
+  },
+  mounted: function () {
     this.getImages()
   },
   methods: {
     getImages: function () {
+      const { endpoint } = this.$route.params
+
       Axios({
         method: "post",
-        url: "https://waifu.pics/api/many/sfw",
+        url: `https://waifu.pics/api/many/${endpoint === undefined ? 'sfw' : endpoint}`,
         data: {
           exclude: this.exclude,
         },

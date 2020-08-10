@@ -17,6 +17,22 @@
 
     "ENDPOINTS": [
         "sfw",
-        "nsfw"
+        "nsfw",
+        "bully",
+        "cry",
+        "hug",
+        "kiss",
+        "lick",
+        "pat",
+        "smug",
+        "highfive",
+        "nom",
+        "bite",
+        "slap",
+        "wink",
+        "poke",
+        "dance",
+        "cringe",
+        "blush"
     ]
 }
