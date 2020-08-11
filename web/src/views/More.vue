@@ -15,15 +15,7 @@
   </div>
 </template>
 
-<style lang="scss">
-.vertical-center {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
-
+<style lang="scss" scoped>
 .v-card {
   text-align: center;
 
@@ -43,7 +35,7 @@
 </style>
 
 <script>
-import testdata from '@/assets/endpoints.js'
+import { api } from '@/functions/api.js'
 
 export default {
   name: 'More',
@@ -53,7 +45,7 @@ export default {
     }
   },
   created () {
-    this.endpoints = testdata
+    this.endpoints = api.getEndpoints()
   },
 }
 </script>

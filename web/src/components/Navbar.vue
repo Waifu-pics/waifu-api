@@ -43,6 +43,11 @@ export default {
         link: "/more",
         icon: "mdi-dots-horizontal",
       },
+      {
+        title: "Docs",
+        link: "/docs",
+        icon: "mdi-api",
+      },
     ],
   }),
 }

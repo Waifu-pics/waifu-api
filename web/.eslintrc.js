@@ -35,7 +35,6 @@ module.exports = {
     'function-call-argument-newline': ['off', 'consistent'],
     'func-call-spacing': ['error', 'never'],
     'newline-before-return': 'error',
-    'newline-per-chained-call': ['error', { ignoreChainWithDepth: 2 }],
     'no-mixed-spaces-and-tabs': 'error',
     'no-multi-assign': ['error'],
     'no-multiple-empty-lines': ['error', {

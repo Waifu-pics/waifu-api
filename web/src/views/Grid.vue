@@ -1,7 +1,14 @@
 <template>
-  <div id="photos">
-    <div v-for="image in images" v-bind:key="image">
-      <img :src="'https://i.waifu.pics/' + image">
+  <div v-if="is404" class="centered">
+    <img src="@/assets/404.png">
+    <h1>Are you lost?</h1>
+    <v-btn outlined :to="'/'" text>Go Home!</v-btn>
+  </div>
+  <div v-else>
+    <div id="photos">
+      <div v-for="image in images" v-bind:key="image">
+        <img :src="cdnroot + image">
+      </div>
     </div>
   </div>
 </template>
@@ -14,10 +21,13 @@ export default {
     return {
       exclude: [],
       images: [],
+      is404: false,
+      cdnroot: process.env.VUE_APP_CDNROOT,
     }
   },
   watch: {
     '$route.params.endpoint' () {
+      this.is404 = false
       this.exclude = []
       this.getImages()
     },
@@ -31,7 +41,7 @@ export default {
 
       Axios({
         method: "post",
-        url: `https://waifu.pics/api/many/${endpoint === undefined ? 'sfw' : endpoint}`,
+        url: `${process.env.VUE_APP_APIROOT}/api/many/${endpoint === undefined ? 'sfw' : endpoint}`,
         data: {
           exclude: this.exclude,
         },
@@ -40,13 +50,22 @@ export default {
           this.exclude.push(file)
         })
         this.images = response.data.data
+      }).catch((response) => {
+        this.is404 = true
       })
     },
   },
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.centered {
+  text-align: center;
+  
+  h1 {
+    margin-bottom: 5px;
+  }
+}
 #photos {
     line-height: 0;
 
