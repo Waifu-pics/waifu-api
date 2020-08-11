@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import More from '../views/More.vue'
 import Grid from '../views/Grid.vue'
 import Docs from '../views/Docs.vue'
+import Login from '../views/Login.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
     path: '/docs',
     name: 'Docs',
     component: Docs,
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
   },
   {
     path: '/:endpoint',

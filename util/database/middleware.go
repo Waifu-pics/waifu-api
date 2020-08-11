@@ -57,10 +57,12 @@ func (m Database) CreateFileInDB(file, md5, endp string, verified bool) error {
 // GetFilesAdmin : get files for specified endpoint admin
 func (m Database) GetFilesAdmin(endp string, verified bool) ([]string, error) {
 	rows, err := m.db.Query("SELECT file FROM uploads WHERE verified = ?", verified)
-	defer rows.Close()
+
 	if err != nil {
 		return nil, err
 	}
+
+	defer rows.Close()
 
 	var files []string
 
@@ -82,8 +84,6 @@ func (m Database) GetFiles(endpoint string, notIN []string, limit int) ([]string
 	var err error
 	var rows *sql.Rows
 
-	defer rows.Close()
-
 	if len(notIN) == 0 || notIN == nil {
 		rows, err = m.db.Query("SELECT file FROM uploads WHERE type = ? AND verified = 1 ORDER BY RAND() LIMIT ?", limit)
 	} else {
@@ -99,6 +99,8 @@ func (m Database) GetFiles(endpoint string, notIN []string, limit int) ([]string
 	if err != nil {
 		return nil, err
 	}
+
+	defer rows.Close()
 
 	var files []string
 

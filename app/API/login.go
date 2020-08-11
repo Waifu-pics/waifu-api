@@ -62,10 +62,10 @@ func (api API) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	cookie := http.Cookie{
-		Name:   "auth-token",
-		Value:  string(jwtoken),
-		MaxAge: 0,
-		Path:   "/",
+		Name:    "auth-token",
+		Value:   string(jwtoken),
+		Expires: time.Now().Add(60 * time.Minute),
+		Path:    "/",
 	}
 
 	http.SetCookie(w, &cookie)
