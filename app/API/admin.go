@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"waifu.pics/util/file"
@@ -20,7 +19,6 @@ func (api API) ListFile(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&res)
 	if err != nil {
-		fmt.Println(err)
 		web.WriteResp(w, 500, "Error")
 		return
 	}
@@ -32,7 +30,6 @@ func (api API) ListFile(w http.ResponseWriter, r *http.Request) {
 
 	files, err := api.Database.GetFilesAdmin(res.Endpoint, res.Query, res.Verified)
 	if err != nil {
-		fmt.Println(err)
 		web.WriteResp(w, 500, "Error")
 		return
 	}
@@ -45,7 +42,6 @@ func (api API) ListFile(w http.ResponseWriter, r *http.Request) {
 
 	jsonres, err := json.Marshal(response)
 	if err != nil {
-		fmt.Println(err)
 		web.WriteResp(w, 500, "Error")
 		return
 	}

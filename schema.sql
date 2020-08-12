@@ -1,7 +1,7 @@
 create table uploads
 (
     id       int auto_increment,
-    file     varchar(16)          not null,
+    file     varchar(64)          not null,
     md5      varchar(64)          not null,
     type     varchar(16)          not null,
     verified tinyint(1) default 0 not null,

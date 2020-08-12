@@ -3,9 +3,10 @@
     "PORT": "8080",
 
     "DB": {
-        "URL": "mongodb://127.0.0.1/",
-        "DBNAME": "database" 
+        "URL": "user:password@tcp(localhost:3306)/waifus"
     },
+
+    "JWT": "supersecuretoken",
 
     "S3": {
         "ENDPOINT": "s3 endpoint",

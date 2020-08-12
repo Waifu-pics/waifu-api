@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"crypto/md5"
 	"encoding/hex"
-	"fmt"
 	"io"
 	"net/http"
 
@@ -76,19 +75,16 @@ func (api API) UploadHandle(w http.ResponseWriter, r *http.Request) {
 		for err != nil && iter < 10 {
 			err = api.Database.CreateFileInDB(filename, hash, resType, false)
 			if err != database.ErrorFileNameExists {
-				fmt.Println("lol")
 				web.WriteResp(w, 500, "Error")
 				return
 			}
 			iter++
 			if iter == 9 {
-				fmt.Println("lol")
 				web.WriteResp(w, 500, "Error")
 				return
 			}
 		}
 	default:
-		fmt.Println(err)
 		web.WriteResp(w, 500, "Error")
 		return
 	}
