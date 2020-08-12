@@ -52,6 +52,7 @@ export default {
         },
       }).then(() => {
         this.$notification.success("You have been logged in!")
+        this.$router.push('/admin')
       }).catch(() => {
         this.$notification.error("There was a problem logging in!")
       })

@@ -17,13 +17,16 @@
     </v-container>
     <div>
       <v-container fluid>
-        <v-row dense>
-          <v-col v-for="file in res" :key="file">
-            <Filebox style="display: inline; width: 400px; margin: 0 auto;" :file="file.file" :verified="file.verified"></Filebox>
+        <v-row dense justify="center">
+          <v-col v-for="file in res" :key="file" style="max-width: 400px;">
+            <Filebox :file="file.file" :verified="file.verified"></Filebox>
           </v-col>
         </v-row>
       </v-container>
     </div>
+    <v-btn fab large dark fixed bottom right v-on:click="getImages(false)">
+      <v-icon>mdi-logout-variant</v-icon>
+    </v-btn>
   </div>
 </template>
 

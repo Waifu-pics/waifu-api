@@ -5,6 +5,9 @@
     <v-btn outlined :to="'/'" text>Go Home!</v-btn>
   </div>
   <div v-else>
+    <v-btn fab large dark fixed bottom right v-on:click="getImages(false)">
+      <v-icon>mdi-refresh</v-icon>
+    </v-btn>
     <div id="photos">
       <div v-for="image in images" v-bind:key="image">
         <img :src="cdnroot + image">
@@ -29,14 +32,14 @@ export default {
     '$route.params.endpoint' () {
       this.is404 = false
       this.exclude = []
-      this.getImages()
+      this.getImages(true)
     },
   },
   mounted: function () {
-    this.getImages()
+    this.getImages(true)
   },
   methods: {
-    getImages: function () {
+    getImages: function (first) {
       const { endpoint } = this.$route.params
 
       Axios({
@@ -51,7 +54,12 @@ export default {
         })
         this.images = response.data.files
       }).catch((response) => {
-        this.is404 = true
+        if (first) {
+          this.is404 = true
+        } else {
+          this.exclude = []
+          this.getImages(false)
+        }
       })
     },
   },
