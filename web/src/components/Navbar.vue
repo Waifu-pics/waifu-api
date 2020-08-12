@@ -41,6 +41,11 @@ export default {
         icon: "mdi-dots-horizontal",
       },
       {
+        title: "Uploads",
+        link: "/upload",
+        icon: "mdi-upload",
+      },
+      {
         title: "Docs",
         link: "/docs",
         icon: "mdi-api",
