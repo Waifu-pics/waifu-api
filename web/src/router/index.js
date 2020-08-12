@@ -3,7 +3,9 @@ import VueRouter from 'vue-router'
 import More from '../views/More.vue'
 import Grid from '../views/Grid.vue'
 import Docs from '../views/Docs.vue'
+import Dashboard from '../views/Dashboard.vue'
 import Login from '../views/Login.vue'
+import Upload from '../views/Upload.vue'
 
 Vue.use(VueRouter)
 
@@ -24,9 +26,19 @@ const routes = [
     component: Docs,
   },
   {
-    path: '/login',
+    path: '/upload',
+    name: 'Upload',
+    component: Upload,
+  },
+  {
+    path: '/admin/login',
     name: 'Login',
     component: Login,
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: Dashboard,
   },
   {
     path: '/:endpoint',

@@ -1,5 +1,5 @@
 <template>
-  <div class="centered">
+  <div v-if="!loggedin" class="centered">
     <v-card max-width="400" outlined>
       <div class="topbox">
         <h1 class="font-weight-light">Sign in</h1>
@@ -31,10 +31,12 @@
 
 <script>
 import Axios from 'axios'
+import { api } from '@/functions/api.js'
 
 export default {
   data: function () {
     return {
+      loggedin: true,
     }
   },
   methods: {
@@ -54,6 +56,13 @@ export default {
         this.$notification.error("There was a problem logging in!")
       })
     },
+  },
+  mounted: function () {
+    api.checkLoggedIn().then(() => {
+      this.$router.push('/admin')
+    }).catch(() => {
+      this.loggedin = false
+    })
   },
 }
 </script>

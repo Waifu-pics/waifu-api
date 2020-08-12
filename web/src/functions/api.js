@@ -19,4 +19,9 @@ export const api = {
 
     return endpoints
   },
+  checkLoggedIn: function () {
+    return Axios.post(`${process.env.VUE_APP_APIROOT}/api/login`).then(res => {
+      return res.status
+    })
+  },
 }

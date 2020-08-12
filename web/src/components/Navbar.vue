@@ -22,9 +22,6 @@
 
 <script>
 export default {
-  props: {
-    source: String,
-  },
   data: () => ({
     drawer: false,
     routes: [
@@ -47,6 +44,11 @@ export default {
         title: "Docs",
         link: "/docs",
         icon: "mdi-api",
+      },
+      {
+        title: "Dashboard",
+        link: "/admin",
+        icon: "mdi-view-dashboard",
       },
     ],
   }),

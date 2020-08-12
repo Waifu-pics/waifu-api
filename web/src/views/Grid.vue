@@ -46,10 +46,10 @@ export default {
           exclude: this.exclude,
         },
       }).then((response) => {
-        response.data.data.map((file) => {
+        response.data.files.map((file) => {
           this.exclude.push(file)
         })
-        this.images = response.data.data
+        this.images = response.data.files
       }).catch((response) => {
         this.is404 = true
       })

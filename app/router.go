@@ -34,6 +34,7 @@ func Router(config config.Config, database database.Database) *chi.Mux {
 		r.Use(mw.Verify)
 
 		r.Post("/api/admin/verify", endpoints.VerifyFile)
+		r.Post("/api/admin/delete", endpoints.DeleteFile)
 		r.Post("/api/admin/list", endpoints.ListFile)
 	})
 

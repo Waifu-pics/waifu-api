@@ -44,7 +44,7 @@ func (m Database) CreateFileInDB(file, md5, endp string, verified bool) error {
 		return ErrorMD5Exists
 	}
 
-	_, err := m.db.Exec("INSERT INTO uploads (file. md5, type, verified) VALUES (? ? ? ?)", file, md5, endp, verified)
+	_, err := m.db.Exec("INSERT INTO uploads (file, md5, type, verified) VALUES (?, ?, ?, ?)", file, md5, endp, verified)
 	if err != nil {
 		if strings.Contains(err.Error(), "Duplicate entry") {
 			return ErrorFileNameExists
@@ -55,8 +55,15 @@ func (m Database) CreateFileInDB(file, md5, endp string, verified bool) error {
 }
 
 // GetFilesAdmin : get files for specified endpoint admin
-func (m Database) GetFilesAdmin(endp string, verified bool) ([]string, error) {
-	rows, err := m.db.Query("SELECT file FROM uploads WHERE verified = ?", verified)
+func (m Database) GetFilesAdmin(endp, query string, verified bool) ([]string, error) {
+	var rows *sql.Rows
+	var err error
+
+	if query != "" {
+		rows, err = m.db.Query("SELECT file FROM uploads WHERE verified = ? AND type = ? AND file LIKE CONCAT('%', ?, '%')", verified, endp, query)
+	} else {
+		rows, err = m.db.Query("SELECT file FROM uploads WHERE verified = ? AND type = ?", verified, endp)
+	}
 
 	if err != nil {
 		return nil, err
@@ -85,7 +92,7 @@ func (m Database) GetFiles(endpoint string, notIN []string, limit int) ([]string
 	var rows *sql.Rows
 
 	if len(notIN) == 0 || notIN == nil {
-		rows, err = m.db.Query("SELECT file FROM uploads WHERE type = ? AND verified = 1 ORDER BY RAND() LIMIT ?", limit)
+		rows, err = m.db.Query("SELECT file FROM uploads WHERE type = ? AND verified = 1 ORDER BY RAND() LIMIT ?", endpoint, limit)
 	} else {
 		args := make([]interface{}, len(notIN))
 		for i, fn := range notIN {
