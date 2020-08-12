@@ -24,7 +24,7 @@
         </v-row>
       </v-container>
     </div>
-    <v-btn fab large dark fixed bottom right v-on:click="getImages(false)">
+    <v-btn fab large dark fixed bottom right v-on:click="logout()">
       <v-icon>mdi-logout-variant</v-icon>
     </v-btn>
   </div>
@@ -51,6 +51,15 @@ export default {
     Filebox,
   },
   methods: {
+    logout: function () {
+      // Remove cookie
+      this.loggedin = false
+      document.cookie = "auth-token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+
+      // Send notif and go to login
+      this.$notification.success("You have been logged out!")
+      this.$router.push('/admin/login')
+    },
     search: function () {
       Axios({
         method: "post",
@@ -72,7 +81,7 @@ export default {
             })
           })
         }
-
+        
         this.res = query
       })
     },
