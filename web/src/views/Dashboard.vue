@@ -79,8 +79,12 @@ export default {
       }).then((res) => {
         this.$notification.success(res.data)
 
+        this.deletelist = []
+
         this.search()
       }).catch((error) => {
+        this.deletelist = []
+
         this.$notification.error(error.response.data)
       })
     },
