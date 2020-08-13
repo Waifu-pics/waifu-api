@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loggedin">
+  <div v-if="!loggedin">
     <v-container>
       <v-card class="mx-auto" style="margin-top: 20px; margin-bottom: 10px;" max-width="400" outlined>
         <v-list-item three-line>
@@ -24,6 +24,21 @@
         </v-row>
       </v-container>
     </div>
+
+    <v-bottom-navigation v-if="deletelist.length > 0" :value="activeBtn" app>
+      <v-btn v-on:click="verifymany(true)">
+        <v-icon>mdi-check</v-icon>
+      </v-btn>
+
+      <v-btn v-on:click="verifymany(false)">
+        <v-icon>mdi-delete</v-icon>
+      </v-btn>
+
+      <v-btn v-on:click="deletelist = []">
+        <v-icon>mdi-select-off</v-icon>
+      </v-btn>
+    </v-bottom-navigation>
+
     <v-btn fab large dark fixed bottom right v-on:click="logout()">
       <v-icon>mdi-logout-variant</v-icon>
     </v-btn>
@@ -40,6 +55,7 @@ export default {
     return {
       res: [],
       endpoints: [],
+      deletelist: [],
       loggedin: false,
       endpoint: "sfw",
       verified: false,
@@ -51,6 +67,23 @@ export default {
     Filebox,
   },
   methods: {
+    verifymany: function (verify) {
+      let endpoint = verify ? "verify" : "delete"
+
+      Axios({
+        method: "post",
+        url: `${process.env.VUE_APP_APIROOT}/api/admin/${endpoint}`,
+        data: {
+          file: deletelist,
+        },
+      }).then((res) => {
+        this.$notification.success(res.data)
+
+        this.$parent.search()
+      }).catch((error) => {
+        this.$notification.error(error.response.data)
+      })
+    },
     logout: function () {
       // Remove cookie
       this.loggedin = false
@@ -90,13 +123,13 @@ export default {
     },
   },
   mounted: function () {
-    api.checkLoggedIn().then(() => {
-      this.loggedin = true
-      this.endpoints = api.getEndpoints(false)
-      this.search()
-    }).catch(() => {
-      this.$router.push('/admin/login')
-    })
+    // api.checkLoggedIn().then(() => {
+    //   this.loggedin = true
+    //   this.endpoints = api.getEndpoints(false)
+    //   this.search()
+    // }).catch(() => {
+    //   this.$router.push('/admin/login')
+    // })
   },
 }
 </script>

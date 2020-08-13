@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"waifu.pics/util/file"
@@ -54,7 +55,7 @@ func (api API) ListFile(w http.ResponseWriter, r *http.Request) {
 // VerifyFile : Verifying user uploads
 func (api API) VerifyFile(w http.ResponseWriter, r *http.Request) {
 	var res struct {
-		File string `json:"file"`
+		File []string `json:"file"`
 	}
 
 	err := json.NewDecoder(r.Body).Decode(&res)
@@ -65,19 +66,23 @@ func (api API) VerifyFile(w http.ResponseWriter, r *http.Request) {
 
 	defer r.Body.Close()
 
-	err = api.Database.VerifyFile(res.File)
-	if err != nil {
-		web.WriteResp(w, 400, "File could not be verified!")
-		return
+	var errcount int
+
+	for _, v := range res.File {
+		err = api.Database.VerifyFile(v)
+		if err != nil {
+			errcount++
+		}
 	}
-	web.WriteResp(w, 200, "File has been verified!")
+
+	web.WriteResp(w, 200, fmt.Sprintf("Files have been verified with %d errors!", errcount))
 	return
 }
 
 // DeleteFile : delete a file from the API
 func (api API) DeleteFile(w http.ResponseWriter, r *http.Request) {
 	var res struct {
-		File string `json:"file"`
+		File []string `json:"file"`
 	}
 
 	err := json.NewDecoder(r.Body).Decode(&res)
@@ -88,15 +93,18 @@ func (api API) DeleteFile(w http.ResponseWriter, r *http.Request) {
 
 	defer r.Body.Close()
 
-	err = api.Database.DeleteFile(res.File)
-	if err != nil {
-		web.WriteResp(w, 400, "File could not be deleted!")
-		return
+	var errcount int
+
+	for _, v := range res.File {
+		err = api.Database.DeleteFile(v)
+		if err != nil {
+			errcount++
+		}
+		if err := file.DeleteFile(v, api.Config); err != nil {
+			errcount++
+		}
 	}
-	if err := file.DeleteFile(res.File, api.Config); err != nil {
-		web.WriteResp(w, 400, "File could not be deleted!")
-		return
-	}
-	web.WriteResp(w, 200, "File has been Deleted")
+
+	web.WriteResp(w, 200, fmt.Sprintf("Files have been deleted with %d errors!", errcount))
 	return
 }

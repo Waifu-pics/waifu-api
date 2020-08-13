@@ -6,6 +6,8 @@
       </v-img>
 
       <v-card-actions>
+        <v-checkbox style="margin-bottom: -20px; margin-top: -5px; margin-left: 5px;" v-model="$parent._data.deletelist" :value="file"></v-checkbox>
+
         <v-spacer></v-spacer>
 
         <v-btn icon v-on:click="open()">
@@ -48,7 +50,9 @@ export default {
         method: "post",
         url: `${this.apiroot}/api/admin/${endpoint}`,
         data: {
-          file: this.file,
+          file: [
+            this.file,
+          ],
         },
       }).then((res) => {
         this.$notification.success(`${this.file} was successfuly ${plural}!`)

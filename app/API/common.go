@@ -7,7 +7,7 @@ import (
 )
 
 func getExtension(text string) string {
-	pos := strings.Index(text, ".")
+	pos := strings.LastIndex(text, ".")
 	if pos == -1 {
 		return ""
 	}
