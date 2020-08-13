@@ -123,13 +123,13 @@ export default {
     },
   },
   mounted: function () {
-    // api.checkLoggedIn().then(() => {
-    //   this.loggedin = true
-    //   this.endpoints = api.getEndpoints(false)
-    //   this.search()
-    // }).catch(() => {
-    //   this.$router.push('/admin/login')
-    // })
+    api.checkLoggedIn().then(() => {
+      this.loggedin = true
+      this.endpoints = api.getEndpoints(false)
+      this.search()
+    }).catch(() => {
+      this.$router.push('/admin/login')
+    })
   },
 }
 </script>
