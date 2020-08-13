@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!loggedin">
+  <div v-if="loggedin">
     <v-container>
       <v-card class="mx-auto" style="margin-top: 20px; margin-bottom: 10px;" max-width="400" outlined>
         <v-list-item three-line>
