@@ -74,12 +74,12 @@ export default {
         method: "post",
         url: `${process.env.VUE_APP_APIROOT}/api/admin/${endpoint}`,
         data: {
-          file: deletelist,
+          file: this.deletelist,
         },
       }).then((res) => {
         this.$notification.success(res.data)
 
-        this.$parent.search()
+        this.search()
       }).catch((error) => {
         this.$notification.error(error.response.data)
       })
