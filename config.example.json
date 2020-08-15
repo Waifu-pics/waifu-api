@@ -19,6 +19,8 @@
     "ENDPOINTS": [
         "sfw",
         "nsfw",
+        "neko",
+        "lewdneko",
         "trap",
         "bully",
         "cry",
