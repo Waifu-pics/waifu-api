@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"strings"
 )
 
@@ -88,22 +89,64 @@ func (m Database) GetFilesAdmin(endp, query string, verified bool) ([]string, er
 }
 
 func (m Database) GetFiles(endpoint string, notIN []string, limit int) ([]string, error) {
-	var err error
-	var rows *sql.Rows
-
-	if len(notIN) == 0 || notIN == nil {
-		rows, err = m.db.Query("SELECT file FROM uploads WHERE type = ? AND verified = 1 ORDER BY RAND() LIMIT ?", endpoint, limit)
-	} else {
-		args := make([]interface{}, len(notIN))
-		for i, fn := range notIN {
-			args[i] = fn
+	if notIN != nil && len(notIN) > 0 {
+		tx, err := m.db.Begin()
+		if err != nil {
+			return nil, err
 		}
-		sqlstr := "SELECT file FROM uploads WHERE file NOT IN (?" + strings.Repeat(",?", len(args)-1) + `)` + " AND type = ? AND verified = 1 ORDER BY RAND() LIMIT ?"
-		args = append(args, endpoint, limit)
-		rows, err = m.db.Query(sqlstr, args...)
+
+		defer tx.Rollback()
+
+		_, err = tx.Exec("CREATE TEMPORARY TABLE IF NOT EXISTS ignorefile (file TEXT)")
+		if err != nil {
+			return nil, err
+		}
+
+		// Chunked to prevent string over 2048 characters
+		var splice []string
+		for i, v := range notIN {
+			splice = append(splice, v)
+			// If index is divisible by 100
+			if i%100 == 0 || i == len(notIN)-1 {
+				args := make([]interface{}, len(splice))
+				for i, fn := range splice {
+					args[i] = fn
+				}
+
+				_, err := tx.Exec("INSERT INTO ignorefile (file) VALUES (?)"+strings.Repeat(",(?)", len(splice)-1), args...)
+				if err != nil {
+					return nil, err
+				}
+
+				splice = []string{}
+			}
+		}
+
+		rows, err := tx.Query("SELECT file FROM uploads WHERE type = ? AND verified = 1 AND file NOT IN (SELECT file FROM ignorefile) ORDER BY RAND() LIMIT ?", endpoint, limit)
+		if err != nil {
+			return nil, err
+		}
+
+		defer rows.Close()
+
+		var files []string
+		for rows.Next() {
+			var file string
+
+			err := rows.Scan(&file)
+			if err != nil {
+				return nil, err
+			}
+
+			files = append(files, file)
+		}
+
+		return files, nil
 	}
 
+	rows, err := m.db.Query("SELECT file FROM uploads WHERE type = ? AND verified = 1 ORDER BY RAND() LIMIT ?", endpoint, limit)
 	if err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
 
@@ -114,7 +157,11 @@ func (m Database) GetFiles(endpoint string, notIN []string, limit int) ([]string
 	for rows.Next() {
 		var file string
 
-		rows.Scan(&file)
+		err := rows.Scan(&file)
+		if err != nil {
+			fmt.Println(err)
+			return nil, err
+		}
 
 		files = append(files, file)
 	}

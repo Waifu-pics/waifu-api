@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"waifu.pics/util/web"
@@ -45,6 +46,7 @@ func (multi Multi) GetManyImage(w http.ResponseWriter, r *http.Request) {
 
 	files, err := multi.API.Database.GetFiles(multi.Endpoint, excludeDat.Exclude, 30)
 	if err != nil || len(files) == 0 {
+		fmt.Println(err)
 		web.WriteResp(w, 400, "Error!")
 		return
 	}

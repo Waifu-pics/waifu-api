@@ -17,8 +17,7 @@ func Router(config config.Config, database database.Database) *chi.Mux {
 	mw := &auth.Middleware{Config: config}
 
 	r.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"*"},
-		AllowCredentials: true,
+		AllowedOrigins: []string{"*"},
 	}))
 
 	r.Get("/api/endpoints", endpoints.GetEndpoints)
