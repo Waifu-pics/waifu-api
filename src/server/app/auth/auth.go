@@ -5,7 +5,7 @@ import (
 
 	"github.com/Riku32/waifu.pics/src/server/util/config"
 	"github.com/Riku32/waifu.pics/src/server/util/web"
-	"github.com/gbrlsnchs/jwt/v3"
+	"github.com/gbrlsnchs/jwt"
 	"github.com/gorilla/context"
 )
 
