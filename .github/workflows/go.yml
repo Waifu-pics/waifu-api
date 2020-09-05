@@ -26,7 +26,7 @@ jobs:
       run: cd ./src/server
 
     - name: Get JWT
-      run: go get github.com/gbrlsnchs/jwt/v3"
+      run: go get github.com/gbrlsnchs/jwt/v3
 
     - name: Get dependencies
       run: go get -v ./...
