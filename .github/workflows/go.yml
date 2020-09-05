@@ -2,9 +2,9 @@ name: Go
 
 on:
   push:
-    branches: [ dev, v2 ]
+    branches: [ v2 ]
   pull_request:
-    branches: [ dev, v2 ]
+    branches: [ v2 ]
 
 jobs:
 
@@ -29,6 +29,9 @@ jobs:
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
             dep ensure
         fi
+
+    - name: Move
+      run: cd ./src/server
 
     - name: Build
       run: go build -v .
