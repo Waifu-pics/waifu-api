@@ -1,0 +1,44 @@
+# Do not change the port if using docker, it will stop it from functioning
+port: 8081
+
+web:
+    cdn_url:
+    jwt:
+
+# Database options
+database:
+    url:
+
+storage:
+    endpoint:
+    accesskey:
+    secretkey:
+    region:
+    bucket:
+
+endpoints:
+    sfw:
+        - waifu
+        - neko
+        - shinobu
+        - bully
+        - cry
+        - hug
+        - kiss
+        - lick
+        - pat
+        - smug
+        - highfive
+        - nom
+        - bite
+        - slap
+        - wink
+        - poke
+        - dance
+        - cringe
+        - blush
+    nsfw:
+        - waifu
+        - neko
+        - trap
+        - blowjob
