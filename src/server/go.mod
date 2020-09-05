@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/aws/aws-sdk-go v1.30.28
-	github.com/gbrlsnchs/jwt/v3 v3.0.0-rc.2 // indirect
+	github.com/gbrlsnchs/jwt/v3 v3.0.0-rc.2
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/go-chi/cors v1.1.1
 	github.com/go-sql-driver/mysql v1.5.0
