@@ -65,7 +65,7 @@ func Router(config config.Config, database database.Database) *chi.Mux {
 		r.Post("/api/many/nsfw/"+endpoint, apim.GetManyImage)
 	}
 
-	if static.Dev {
+	if static.Serve {
 		ServeDir(r, "/", "./dist/")
 
 		r.NotFound(func(w http.ResponseWriter, r *http.Request) {

@@ -1,5 +1,5 @@
 package static
 
 var (
-	Dev bool = false
+	Serve bool = false
 )

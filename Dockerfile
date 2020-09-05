@@ -14,4 +14,4 @@ WORKDIR /app
 COPY --from=gobuilder /src/goapp /app
 COPY --from=vuebuilder /src/web/dist /app/dist
 
-ENTRYPOINT ./goapp
+ENTRYPOINT ./goapp -serve

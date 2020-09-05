@@ -14,10 +14,10 @@ import (
 )
 
 func main() {
-	dev := flag.Bool("dev", false, "developer mode")
+	serve := flag.Bool("serve", false, "serving gui")
 	newuser := flag.Bool("newuser", false, "create an administrator")
 	flag.Parse()
-	static.Dev = *dev
+	static.Serve = *serve
 
 	cfg := config.LoadConfig("./config.yml")
 
