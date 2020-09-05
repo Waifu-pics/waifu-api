@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Riku32/waifu.pics/util/web"
+	"github.com/Riku32/waifu.pics/src/server/util/web"
 )
 
 type Multi struct {

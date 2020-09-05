@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/Riku32/waifu.pics/util/web"
+	"github.com/Riku32/waifu.pics/src/server/util/web"
 )
 
 func (api API) GetEndpoints(w http.ResponseWriter, r *http.Request) {

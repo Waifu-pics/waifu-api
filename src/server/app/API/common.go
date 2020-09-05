@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Riku32/waifu.pics/util/config"
+	"github.com/Riku32/waifu.pics/src/server/util/config"
 )
 
 const (

@@ -9,9 +9,9 @@ import (
 	"net/http"
 
 	"github.com/gorilla/context"
-	"github.com/Riku32/waifu.pics/util/database"
-	"github.com/Riku32/waifu.pics/util/file"
-	"github.com/Riku32/waifu.pics/util/web"
+	"github.com/Riku32/waifu.pics/src/server/util/database"
+	"github.com/Riku32/waifu.pics/src/server/util/file"
+	"github.com/Riku32/waifu.pics/src/server/util/web"
 )
 
 const (

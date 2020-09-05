@@ -5,12 +5,12 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Riku32/waifu.pics/app"
-	"github.com/Riku32/waifu.pics/util/admin"
-	"github.com/Riku32/waifu.pics/util/config"
-	"github.com/Riku32/waifu.pics/util/database"
-	"github.com/Riku32/waifu.pics/util/file"
-	"github.com/Riku32/waifu.pics/util/static"
+	"github.com/Riku32/waifu.pics/src/server/app"
+	"github.com/Riku32/waifu.pics/src/server/util/admin"
+	"github.com/Riku32/waifu.pics/src/server/util/config"
+	"github.com/Riku32/waifu.pics/src/server/util/database"
+	"github.com/Riku32/waifu.pics/src/server/util/file"
+	"github.com/Riku32/waifu.pics/src/server/util/static"
 )
 
 func main() {

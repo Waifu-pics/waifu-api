@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Riku32/waifu.pics/app/auth"
-	"github.com/Riku32/waifu.pics/util/crypto"
-	"github.com/Riku32/waifu.pics/util/web"
+	"github.com/Riku32/waifu.pics/src/server/app/auth"
+	"github.com/Riku32/waifu.pics/src/server/util/crypto"
+	"github.com/Riku32/waifu.pics/src/server/util/web"
 	"github.com/gbrlsnchs/jwt/v3"
 	"github.com/gorilla/context"
 )

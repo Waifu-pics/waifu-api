@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/Riku32/waifu.pics/util/crypto"
-	"github.com/Riku32/waifu.pics/util/database"
+	"github.com/Riku32/waifu.pics/src/server/util/crypto"
+	"github.com/Riku32/waifu.pics/src/server/util/database"
 	"github.com/tcnksm/go-input"
 )
 
