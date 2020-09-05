@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Riku32/waifu.pics/src/server/util/file"
-	"github.com/Riku32/waifu.pics/src/server/util/web"
+	"github.com/Riku32/waifu.pics/src/util/file"
+	"github.com/Riku32/waifu.pics/src/util/web"
 )
 
 // ListFile : listing files

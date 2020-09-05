@@ -3,8 +3,8 @@ package auth
 import (
 	"net/http"
 
-	"github.com/Riku32/waifu.pics/src/server/util/config"
-	"github.com/Riku32/waifu.pics/src/server/util/web"
+	"github.com/Riku32/waifu.pics/src/util/config"
+	"github.com/Riku32/waifu.pics/src/util/web"
 	"github.com/gbrlsnchs/jwt/v3"
 	"github.com/gorilla/context"
 )

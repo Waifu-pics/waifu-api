@@ -8,10 +8,10 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/Riku32/waifu.pics/src/util/database"
+	"github.com/Riku32/waifu.pics/src/util/file"
+	"github.com/Riku32/waifu.pics/src/util/web"
 	"github.com/gorilla/context"
-	"github.com/Riku32/waifu.pics/src/server/util/database"
-	"github.com/Riku32/waifu.pics/src/server/util/file"
-	"github.com/Riku32/waifu.pics/src/server/util/web"
 )
 
 const (

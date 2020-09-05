@@ -5,11 +5,11 @@ import (
 	"net/http"
 	"strings"
 
-	api "github.com/Riku32/waifu.pics/src/server/app/API"
-	"github.com/Riku32/waifu.pics/src/server/app/auth"
-	"github.com/Riku32/waifu.pics/src/server/util/config"
-	"github.com/Riku32/waifu.pics/src/server/util/database"
-	"github.com/Riku32/waifu.pics/src/server/util/static"
+	api "github.com/Riku32/waifu.pics/src/app/API"
+	"github.com/Riku32/waifu.pics/src/app/auth"
+	"github.com/Riku32/waifu.pics/src/util/config"
+	"github.com/Riku32/waifu.pics/src/util/database"
+	"github.com/Riku32/waifu.pics/src/util/static"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"

@@ -1,3 +1,6 @@
+github.com/Riku32/waifu.pics v0.0.0-20200905051234-a9e4aaf60abd h1:G9dTnwKs2h7dA/WkEo7uSuavfhVONJgt7TRDsZvBUtM=
+github.com/Riku32/waifu.pics/src/server v0.0.0-20200905051234-a9e4aaf60abd h1:/Q0Jyqb2Zlt58HQdDKTQjqHCV0KWWVac4uHxgLs7/bY=
+github.com/Riku32/waifu.pics/src/server v0.0.0-20200905051234-a9e4aaf60abd/go.mod h1:ftMWL+sQ/ovFyCk77otygAhtB8AikbyE9Yu49RjMqTU=
 github.com/aws/aws-sdk-go v1.30.28 h1:SaPM7dlmp7h3Lj1nJ4jdzOkTdom08+g20k7AU5heZYg=
 github.com/aws/aws-sdk-go v1.30.28/go.mod h1:5zCpMtNQVjRREroY7sYe8lOMRSxkhG6MZveU8YkpAk0=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

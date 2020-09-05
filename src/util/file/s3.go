@@ -3,7 +3,7 @@ package file
 import (
 	"bytes"
 
-	"github.com/Riku32/waifu.pics/src/server/util/config"
+	"github.com/Riku32/waifu.pics/src/util/config"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"

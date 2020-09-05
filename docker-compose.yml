@@ -1,0 +1,6 @@
+version: '3'
+services:
+  waifu:
+    build: .
+    ports:
+    - "8081:5000"

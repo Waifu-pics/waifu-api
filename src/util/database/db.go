@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"log"
 
-	"github.com/Riku32/waifu.pics/src/server/util/config"
+	"github.com/Riku32/waifu.pics/src/util/config"
 
 	_ "github.com/go-sql-driver/mysql" // MySQL
 )
