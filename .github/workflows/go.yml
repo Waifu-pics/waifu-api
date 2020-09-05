@@ -26,7 +26,13 @@ jobs:
       run: cd ./src/server
 
     - name: Get dependencies
-      run: GO111MODULE=on go get -v ./...
+      run: |
+        GO111MODULE=on
+        go get -v -t -d ./...
+        if [ -f Gopkg.toml ]; then
+            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+            dep ensure
+        fi
 
     - name: Build
       run: go build -v .
