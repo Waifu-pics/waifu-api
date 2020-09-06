@@ -1,25 +1,19 @@
-create table uploads
-(
-    uploaded datetime   default CURRENT_TIMESTAMP not null,
-    id       int auto_increment,
-    file     varchar(64)                          not null,
-    md5      varchar(64)                          not null,
-    type     varchar(16)                          not null,
-    nsfw     tinyint(1) default 0                 null,
-    verified tinyint(1) default 0                 not null,
-    constraint uploads_file_uindex
-        unique (file),
-    constraint uploads_id_uindex
-        unique (id),
-    constraint uploads_md5_uindex
-        unique (md5)
+CREATE TABLE uploads (
+    uploaded datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    id int AUTO_INCREMENT,
+    file varchar(64) NOT NULL,
+    md5 varchar(64) NOT NULL,
+    TYPE varchar(16) NOT NULL,
+    nsfw tinyint (1) DEFAULT 0 NULL,
+    verified tinyint (1) DEFAULT 0 NOT NULL,
+    CONSTRAINT uploads_file_uindex UNIQUE (file),
+    CONSTRAINT uploads_id_uindex UNIQUE (id),
+    CONSTRAINT uploads_md5_uindex UNIQUE (md5)
 );
 
-
-create table admins
-(
-    Username varchar(32)  not null,
-    Password varchar(128) not null,
-    constraint admins_Username_uindex
-        unique (Username)
+CREATE TABLE admins (
+    Username varchar(32) NOT NULL,
+    PASSWORD varchar(128) NOT NULL,
+    CONSTRAINT admins_Username_uindex UNIQUE (Username)
 );
+
