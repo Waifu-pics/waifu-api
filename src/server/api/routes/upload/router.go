@@ -15,6 +15,5 @@ func NewRouter(options api.Options, c *echo.Group) {
 	auth := middleware.Auth{
 		Jwt: options.Config.Web.Jwt,
 	}
-	c.Group("/", auth.VerifySubtle)
-	c.POST("/upload", route.UploadHandle)
+	c.Group("", auth.VerifySubtle).POST("/upload", route.UploadHandle)
 }
