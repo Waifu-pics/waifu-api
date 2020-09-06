@@ -196,3 +196,31 @@ func (m Database) DeleteFile(filename string) error {
 
 	return nil
 }
+
+func (m Database) GetRecent(limit int) ([]FileData, error) {
+	r, err := m.db.Query("SELECT uploaded, file, type, nsfw, verified FROM uploads ORDER BY uploaded DESC LIMIT ?", limit)
+	if err != nil {
+		return nil, err
+	}
+	defer r.Close()
+
+	var files []FileData
+	for r.Next() {
+		var file FileData
+
+		err := r.Scan(
+			&file.Uploaded,
+			&file.Name,
+			&file.Type,
+			&file.Nsfw,
+			&file.Verified,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		files = append(files, file)
+	}
+
+	return files, nil
+}

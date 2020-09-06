@@ -5,6 +5,7 @@ import (
 	"github.com/Riku32/waifu.pics/src/api"
 	"github.com/Riku32/waifu.pics/src/api/routes/admin"
 	"github.com/Riku32/waifu.pics/src/api/routes/image"
+	"github.com/Riku32/waifu.pics/src/api/routes/info"
 	"github.com/Riku32/waifu.pics/src/api/routes/upload"
 	"github.com/Riku32/waifu.pics/src/config"
 	"github.com/Riku32/waifu.pics/src/database"
@@ -34,6 +35,7 @@ func New(conf config.Config, database database.Database, s3 *s3simple.Session) {
 	image.NewRouter(options, api)
 	admin.NewRouter(options, api)
 	upload.NewRouter(options, api)
+	info.NewRouter(options, api)
 
 	api.GET("/endpoints", func(c echo.Context) error {
 		return c.JSON(200, conf.Endpoints)
