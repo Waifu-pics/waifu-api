@@ -1,11 +1,12 @@
 create table uploads
 (
+    uploaded datetime   default CURRENT_TIMESTAMP not null,
     id       int auto_increment,
-    file     varchar(64)          not null,
-    md5      varchar(64)          not null,
-    type     varchar(16)          not null,
-    nsfw     tinyint(1) default 0 not null,
-    verified tinyint(1) default 0 not null,
+    file     varchar(64)                          not null,
+    md5      varchar(64)                          not null,
+    type     varchar(16)                          not null,
+    nsfw     tinyint(1) default 0                 null,
+    verified tinyint(1) default 0                 not null,
     constraint uploads_file_uindex
         unique (file),
     constraint uploads_id_uindex
@@ -13,6 +14,7 @@ create table uploads
     constraint uploads_md5_uindex
         unique (md5)
 );
+
 
 create table admins
 (

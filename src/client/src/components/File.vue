@@ -59,7 +59,7 @@ export default {
       })
     },
     open: function () {
-      window.open(this.file)
+      window.open(this.file.url)
     },
   },
 }
