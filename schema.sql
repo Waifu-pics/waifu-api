@@ -16,4 +16,3 @@ CREATE TABLE admins (
     PASSWORD varchar(128) NOT NULL,
     CONSTRAINT admins_Username_uindex UNIQUE (Username)
 );
-
