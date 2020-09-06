@@ -4,6 +4,7 @@ create table uploads
     file     varchar(64)          not null,
     md5      varchar(64)          not null,
     type     varchar(16)          not null,
+    nsfw     tinyint(1) default 0 not null,
     verified tinyint(1) default 0 not null,
     constraint uploads_file_uindex
         unique (file),

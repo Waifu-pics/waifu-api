@@ -3,4 +3,6 @@ services:
   waifu:
     build: .
     ports:
-    - "8081:5000"
+    - "5000:8081"
+    volumes:
+      - ./config.yml:/app/config/config.yml

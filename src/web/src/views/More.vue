@@ -12,7 +12,7 @@
           <v-expansion-panel-header>SFW</v-expansion-panel-header>
           <v-expansion-panel-content>
             <v-list-item class="bottom">
-              <v-btn outlined v-for="endpoint in endpoints.sfw" :key="endpoint" :to="endpoint" text>{{endpoint}}</v-btn>
+              <v-btn outlined v-for="endpoint in endpoints.sfw" :key="endpoint" :to="`/sfw/${endpoint}`" text>{{endpoint}}</v-btn>
             </v-list-item>
           </v-expansion-panel-content>
         </v-expansion-panel>
@@ -20,7 +20,7 @@
           <v-expansion-panel-header>NSFW</v-expansion-panel-header>
           <v-expansion-panel-content>
             <v-list-item class="bottom">
-              <v-btn outlined v-for="endpoint in endpoints.nsfw" :key="endpoint" :to="endpoint" text>{{endpoint}}</v-btn>
+              <v-btn outlined v-for="endpoint in endpoints.nsfw" :key="endpoint" :to="`/nsfw/${endpoint}`" text>{{endpoint}}</v-btn>
             </v-list-item>
           </v-expansion-panel-content>
         </v-expansion-panel>

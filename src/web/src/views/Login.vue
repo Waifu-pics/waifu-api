@@ -45,7 +45,7 @@ export default {
       
       Axios({
         method: "post",
-        url: `/api/login`,
+        url: `/api/admin/login`,
         data: {
           username: username,
           password: password,

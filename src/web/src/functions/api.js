@@ -10,7 +10,7 @@ export const api = {
     })
   },
   checkLoggedIn: () => {
-    return Axios.post(`/api/login`).then(res => {
+    return Axios.post(`/api/admin/login`).then(res => {
       return res.status
     })
   },

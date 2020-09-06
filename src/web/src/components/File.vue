@@ -46,7 +46,7 @@ export default {
         method: "post",
         url: `/api/admin/${endpoint}`,
         data: {
-          file: [
+          files: [
             this.file,
           ],
         },

@@ -32,7 +32,7 @@ export default {
       },
       {
         title: "NSFW", 
-        link: "/nsfw",
+        link: "/nsfw/waifu",
         icon: "mdi-domino-mask",
       },
       {
