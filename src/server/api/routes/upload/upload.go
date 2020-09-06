@@ -27,6 +27,8 @@ var ErrFileNotUploaded = "file could not be uploaded"
 
 // UploadHandle ; upload file endpoint
 func (i Route) UploadHandle(c echo.Context) error {
+	isAdmin := c.Get("authbool").(bool)
+
 	var res api.ImageEndpoint
 
 	err := json.Unmarshal([]byte(c.FormValue("upload")), &res)
@@ -68,7 +70,7 @@ func (i Route) UploadHandle(c echo.Context) error {
 		return c.JSON(400, api.Basic{Message: "file is not an image"})
 	}
 
-	err = i.Database.CreateFileInDB(filename, hash, res.Type, res.Nsfw)
+	err = i.Database.CreateFileInDB(filename, hash, res.Type, isAdmin, res.Nsfw)
 	switch err {
 	case nil:
 		break
@@ -77,7 +79,7 @@ func (i Route) UploadHandle(c echo.Context) error {
 	case database.ErrorFileNameExists:
 		var iter = 0
 		for err != nil && iter < 10 {
-			err = i.Database.CreateFileInDB(filename, hash, res.Type, res.Nsfw)
+			err = i.Database.CreateFileInDB(filename, hash, res.Type, isAdmin, res.Nsfw)
 			if err != database.ErrorFileNameExists {
 				return c.JSON(500, api.Basic{Message: api.ErrServer})
 			}

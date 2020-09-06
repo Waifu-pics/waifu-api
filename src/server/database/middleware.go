@@ -38,14 +38,14 @@ var (
 	ErrorFileNameExists = errors.New("filename already exists")
 )
 
-func (m Database) CreateFileInDB(file, md5, endp string, nsfw bool) error {
+func (m Database) CreateFileInDB(file, md5, endp string, isAdmin, nsfw bool) error {
 	var count int
 	m.db.QueryRow("SELECT COUNT(*) FROM uploads WHERE md5 = ?", md5).Scan(&count)
 	if count != 0 {
 		return ErrorMD5Exists
 	}
 
-	_, err := m.db.Exec("INSERT INTO uploads (file, md5, type, nsfw) VALUES (?, ?, ?, ?)", file, md5, endp, nsfw)
+	_, err := m.db.Exec("INSERT INTO uploads (file, md5, type, nsfw, verified) VALUES (?, ?, ?, ?, ?)", file, md5, endp, nsfw, isAdmin)
 	if err != nil {
 		if strings.Contains(err.Error(), "Duplicate entry") {
 			return ErrorFileNameExists
