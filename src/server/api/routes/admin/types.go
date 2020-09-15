@@ -22,5 +22,5 @@ type File struct {
 
 // Filelist : list of files
 type Filelist struct {
-	Files []File `json:"files"`
+	Files []string `json:"files"`
 }

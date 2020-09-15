@@ -141,7 +141,6 @@ export default {
   mounted: function () {
     api.checkLoggedIn().then(() => {
       this.loggedin = true
-      this.endpoints = api.getEndpoints(false)
       this.update()
       this.search()
     }).catch(() => {
