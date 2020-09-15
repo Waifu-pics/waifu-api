@@ -11,6 +11,18 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+      <template v-slot:append>
+        <v-list v-for="route in bottomlink" :key="route" dense nav>
+          <v-list-item :href="route.link">
+            <v-list-item-action>
+              <v-icon>{{route.icon}}</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{route.title}}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </template>
     </v-navigation-drawer>
 
     <v-app-bar app clipped-left>
@@ -54,6 +66,13 @@ export default {
         title: "Dashboard",
         link: "/admin",
         icon: "mdi-view-dashboard",
+      },
+    ],
+    bottomlink: [
+      {
+        title: "Github", 
+        link: "https://github.com/Riku32/waifu.pics",
+        icon: "mdi-github",
       },
     ],
   }),
