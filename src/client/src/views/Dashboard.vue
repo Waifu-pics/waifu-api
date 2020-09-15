@@ -124,7 +124,7 @@ export default {
             })
           })
         }
-        
+
         this.res = query
       })
     },
