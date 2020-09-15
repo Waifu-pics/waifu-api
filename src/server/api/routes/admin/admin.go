@@ -102,13 +102,13 @@ func (i Route) VerifyFile(c echo.Context) error {
 	var errcount int
 
 	for _, v := range body.Files {
-		err := i.Database.VerifyFile(v.Name)
+		err := i.Database.VerifyFile(v)
 		if err != nil {
 			errcount++
 		}
 	}
 
-	return c.JSON(200, api.Basic{Message: fmt.Sprintf("files have been verified with %d errors", errcount)})
+	return c.JSON(200, api.Basic{Message: fmt.Sprintf("Files have been verified with %d errors", errcount)})
 }
 
 // DeleteFile : delete a file from the API
@@ -121,14 +121,14 @@ func (i Route) DeleteFile(c echo.Context) error {
 	var errcount int
 
 	for _, v := range body.Files {
-		err := i.Database.DeleteFile(v.Name)
+		err := i.Database.DeleteFile(v)
 		if err != nil {
 			errcount++
 		}
-		if err := i.S3.DeleteFile(v.Name); err != nil {
+		if err := i.S3.DeleteFile(v); err != nil {
 			errcount++
 		}
 	}
 
-	return c.JSON(200, api.Basic{Message: fmt.Sprintf("files have been verified with %d errors", errcount)})
+	return c.JSON(200, api.Basic{Message: fmt.Sprintf("Files have been deleted with %d errors", errcount)})
 }
