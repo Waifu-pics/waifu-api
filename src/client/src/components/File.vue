@@ -35,8 +35,6 @@ export default {
     file: Object,
     verified: Boolean,
   },
-  data: () => ({
-  }),
   methods: {
     verify: function (verify) {
       let endpoint = verify ? "verify" : "delete"

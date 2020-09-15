@@ -76,7 +76,7 @@ export default {
         method: "post",
         url: `/api/admin/${endpoint}`,
         data: {
-          file: this.deletelist,
+          files: this.deletelist,
         },
       }).then((res) => {
         this.$notification.success(res.data.message)

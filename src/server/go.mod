@@ -8,6 +8,8 @@ require (
 	github.com/aws/aws-sdk-go v1.34.18 // indirect
 	github.com/gbrlsnchs/jwt/v3 v3.0.0-rc.2
 	github.com/go-sql-driver/mysql v1.5.0
+	github.com/influxdata/influxdb-client-go v1.4.0
+	github.com/influxdata/influxdb-client-go/v2 v2.0.1 // indirect
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/gommon v0.3.0 // indirect
 	github.com/mattn/go-colorable v0.1.7 // indirect
