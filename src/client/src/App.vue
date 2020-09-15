@@ -18,6 +18,7 @@
 
 <script>
 import Navbar from './components/Navbar.vue'
+import store from '@/store/index.js'
 
 export default {
   name: 'App',
@@ -26,6 +27,8 @@ export default {
   },
   created () {
     this.$vuetify.theme.dark = true
+    // Preload
+    this.$store.commit('endpoints')
   },
 }
 </script>

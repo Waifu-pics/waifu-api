@@ -53,10 +53,8 @@ export default {
   },
   methods: {
     update: function () {
-      const res = api.getEndpoints((res) => {
-        this.endpoints = (this.nsfw ? res.nsfw : res.sfw)
-        this.endpoint = this.endpoints[0]
-      })
+      this.endpoints = (this.nsfw ? this.$store.getters.endpoints.nsfw : this.$store.getters.endpoints.sfw)
+      this.endpoint = this.endpoints[0]
     },
     handleFilePondInitFile(item) {
       item.setMetadata("type", this.endpoint)

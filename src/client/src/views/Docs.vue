@@ -119,10 +119,8 @@ export default {
     }
   },
   mounted: function () {
-    api.getEndpoints((res) => {
-      this.nsfw = res.nsfw
-      this.sfw = res.sfw
-    })
+    this.nsfw = this.$store.getters.endpoints.nsfw
+    this.sfw = this.$store.getters.endpoints.sfw
   },
 }
 </script>

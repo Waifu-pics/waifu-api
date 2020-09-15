@@ -49,8 +49,6 @@
 </style>
 
 <script>
-import { api } from '@/functions/api.js'
-
 export default {
   name: 'More',
   data () {
@@ -62,10 +60,8 @@ export default {
     }
   },
   created () {
-    api.getEndpoints((res) => {
-      this.endpoints.sfw = res.sfw
-      this.endpoints.nsfw = res.nsfw
-    })
+    this.endpoints.sfw = this.$store.getters.endpoints.sfw
+    this.endpoints.nsfw = this.$store.getters.endpoints.nsfw
   },
 }
 </script>

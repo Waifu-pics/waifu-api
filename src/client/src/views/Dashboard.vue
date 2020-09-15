@@ -50,6 +50,7 @@
 import Axios from 'axios'
 import { api } from '@/functions/api.js'
 import Filebox from '@/components/File.vue'
+import store from '@/store/index.js'
 
 export default {
   data () {
@@ -132,10 +133,8 @@ export default {
       this.endpoint = newpoint
     },
     update: function () {
-      const res = api.getEndpoints((res) => {
-        this.endpoints = (this.nsfw ? res.nsfw : res.sfw)
-        this.endpoint = this.endpoints[0]
-      })
+      this.endpoints = (this.nsfw ? this.$store.getters.endpoints.nsfw : this.$store.getters.endpoints.sfw)
+      this.endpoint = this.endpoints[0]
     },
   },
   mounted: function () {
