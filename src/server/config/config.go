@@ -29,6 +29,12 @@ type Config struct {
 		Sfw  []string `yaml:"sfw" json:"sfw"`
 		Nsfw []string `yaml:"nsfw" json:"nsfw"`
 	} `yaml:"endpoints"`
+	Influx struct {
+		URL    string `json:"url"`
+		Token  string `json:"token"`
+		Org    string `json:"org"`
+		Bucket string `json:"bucket"`
+	} `json:"influx"`
 }
 
 // LoadConfig : Load config from yaml

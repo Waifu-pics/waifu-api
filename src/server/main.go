@@ -9,6 +9,7 @@ import (
 	"syscall"
 
 	s3simple "github.com/Riku32/s3-simple"
+	"github.com/Riku32/waifu.pics/src/api"
 	"github.com/Riku32/waifu.pics/src/api/router"
 	"github.com/Riku32/waifu.pics/src/cmd/admin"
 	"github.com/Riku32/waifu.pics/src/config"
@@ -55,7 +56,13 @@ func main() {
 		log.Fatalln("Unable to start S3")
 	}
 
-	router.New(cfg, db, s3)
+	options := api.Options{
+		Database: db,
+		Config:   cfg,
+		S3:       s3,
+	}
+
+	router.New(options)
 
 	// Do not close program
 	sc := make(chan os.Signal, 1)
