@@ -4,9 +4,9 @@
 <h3>User contributed waifu/anime picture database/API</h3>
 
 
-<img src="https://www.codefactor.io/repository/github/riku32/waifu.pics/badge/dev">
-<img src="https://img.shields.io/github/workflow/status/Riku32/waifu.pics/Go?style=&color=blue">
-<img src="https://img.shields.io/github/license/Riku32/Dash">
+<img src="https://www.codefactor.io/repository/github/Waifu-pics/api/badge/master">
+<img src="https://img.shields.io/github/workflow/status/Waifu-pics/api/Go?style=&color=blue">
+<img src="https://img.shields.io/github/license/Waifu-pics/api">
 <br>
 <h3><a href="https://waifu.pics">Website</a></h3>
 </div>
