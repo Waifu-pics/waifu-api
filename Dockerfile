@@ -5,6 +5,6 @@ RUN cd /src && go build -o goapp
 
 FROM alpine
 WORKDIR /app
-COPY --from=gobuilder /src/goapp /app
+COPY --from=builder /src/goapp /app
 
 ENTRYPOINT ./goapp
