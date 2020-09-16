@@ -44,7 +44,13 @@ export const api = {
         // Response on success sends arraybuffer, on fail sends text, convert buf to text
         let errormsg = String.fromCharCode.apply(null, new Uint8Array(err.response.data))
 
-        return callback(null, JSON.parse(errormsg).message)
+        try {
+          callback(null, JSON.parse(errormsg).message)
+        } catch(e) {
+          callback(null, "You are being rate limited")
+        }
+        
+        return
       }
       callback(null, "Image could not be generated")
     })
