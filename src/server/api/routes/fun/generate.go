@@ -21,7 +21,7 @@ func (i route) GenerateMeme(c echo.Context) error {
 		return c.JSON(400, api.Basic{Message: api.ErrInvalidJSON})
 	}
 
-	if len(body.Text.Bottom) > 30 || len(body.Text.Top) > 30 {
+	if len(body.Text.Bottom) > 50 || len(body.Text.Top) > 50 {
 		return c.JSON(500, api.Basic{Message: "Text is too long"})
 	}
 
