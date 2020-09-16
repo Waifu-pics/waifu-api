@@ -10,7 +10,7 @@ type ResManyImages struct {
 	Files []string `json:"files"`
 }
 
-// ManyImages : body for many images
+// ReqManyImages : body for many images
 type ReqManyImages struct {
 	Exclude []string `json:"exclude"`
 }

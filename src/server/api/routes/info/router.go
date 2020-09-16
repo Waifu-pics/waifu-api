@@ -6,10 +6,10 @@ import (
 )
 
 // Route : route object
-type Route api.Options
+type route api.Options
 
 // NewRouter : create new router for upload endpoint
 func NewRouter(options api.Options, c *echo.Group) {
-	route := Route(options)
+	route := route(options)
 	c.GET("/recent", route.RecentFiles)
 }

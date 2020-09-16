@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/Riku32/waifu.pics/src/api"
-	"github.com/Riku32/waifu.pics/src/middleware"
+	"github.com/Riku32/waifu.pics/src/api/middleware"
 	"github.com/alexedwards/argon2id"
 	"github.com/gbrlsnchs/jwt/v3"
 	"github.com/labstack/echo"

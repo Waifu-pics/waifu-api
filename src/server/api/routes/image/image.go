@@ -8,7 +8,7 @@ import (
 )
 
 // GetImage : Get a single image from the DB
-func (i Route) GetImage(c echo.Context) error {
+func (i route) GetImage(c echo.Context) error {
 	files, err := i.Options.Database.GetFiles(i.Endpoint, i.Nsfw, nil, 1)
 	if err != nil || len(files) == 0 {
 		return c.JSON(500, api.Basic{Message: api.ErrServer})
@@ -18,7 +18,7 @@ func (i Route) GetImage(c echo.Context) error {
 }
 
 // GetManyImage : Get many images from the database
-func (i Route) GetManyImage(c echo.Context) error {
+func (i route) GetManyImage(c echo.Context) error {
 	body := new(ReqManyImages)
 	if err := c.Bind(body); err != nil {
 		return c.JSON(400, api.Basic{Message: api.ErrInvalidJSON})

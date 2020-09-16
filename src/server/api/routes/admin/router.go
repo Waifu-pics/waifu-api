@@ -2,7 +2,7 @@ package admin
 
 import (
 	"github.com/Riku32/waifu.pics/src/api"
-	"github.com/Riku32/waifu.pics/src/middleware"
+	"github.com/Riku32/waifu.pics/src/api/middleware"
 	"github.com/labstack/echo"
 )
 

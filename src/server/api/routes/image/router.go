@@ -5,8 +5,7 @@ import (
 	"github.com/labstack/echo"
 )
 
-// Route : image endpoints
-type Route struct {
+type route struct {
 	Options  api.Options
 	Nsfw     bool
 	Endpoint string
@@ -15,7 +14,7 @@ type Route struct {
 // NewRouter : create new router for image endpoint
 func NewRouter(options api.Options, c *echo.Group) {
 	for _, endpoint := range options.Config.Endpoints.Sfw {
-		route := Route{
+		route := route{
 			Options:  options,
 			Nsfw:     false,
 			Endpoint: endpoint,
@@ -26,7 +25,7 @@ func NewRouter(options api.Options, c *echo.Group) {
 	}
 
 	for _, endpoint := range options.Config.Endpoints.Nsfw {
-		route := Route{
+		route := route{
 			Options:  options,
 			Nsfw:     true,
 			Endpoint: endpoint,

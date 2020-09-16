@@ -8,7 +8,7 @@ import (
 )
 
 // RecentFiles : recent files
-func (i Route) RecentFiles(c echo.Context) error {
+func (i route) RecentFiles(c echo.Context) error {
 	data, err := i.Database.GetRecent(10)
 	if err != nil {
 		fmt.Println(err)
