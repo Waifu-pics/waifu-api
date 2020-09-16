@@ -6,21 +6,12 @@ import (
 	"github.com/Riku32/waifu.pics/src/api/routes/image"
 	"github.com/Riku32/waifu.pics/src/api/routes/info"
 	"github.com/Riku32/waifu.pics/src/api/routes/upload"
-	"github.com/Riku32/waifu.pics/src/static"
 	"github.com/labstack/echo"
 )
 
 // New : initialize router
 func New(options api.Options) {
 	e := echo.New()
-
-	// Serve frontend, disabled in dev mode
-	if !static.Dev {
-		e.Static("/", "dist/")
-		echo.NotFoundHandler = func(c echo.Context) error {
-			return c.File("./dist/index.html")
-		}
-	}
 
 	api := e.Group("/api")
 	image.NewRouter(options, api)

@@ -28,8 +28,9 @@ func main() {
 	// Different structure for different modes
 	var cfg config.Config
 	if static.Dev {
-		cfg = config.LoadConfig("../../config.yml")
+		cfg = config.LoadConfig("../config.yml")
 	} else {
+		// Docker volume in folder
 		cfg = config.LoadConfig("./config/config.yml")
 	}
 
