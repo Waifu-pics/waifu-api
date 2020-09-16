@@ -91,7 +91,7 @@
         <div class="compact">
           <div class="tab">
             <h2 class="font-weight-light">Generate image</h2>
-            <p>Recieve 30 unique images from a specific endpoint or category</p>
+            <p>Generate a meme from a random image</p>
           </div>
           <Apitable class="tab" type="POST">
             https://waifu.pics/api/gen
