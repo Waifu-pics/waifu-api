@@ -9,7 +9,7 @@ export const api = {
       callback(response.data)
     })
   },
-  checkLoggedIn: () => {
+  checkLoggedIn: async () => {
     return Axios.post(`/api/admin/login`).then(res => {
       return res.status
     })
@@ -20,6 +20,33 @@ export const api = {
       url: `/api/${nsfw ? "nsfw" : "sfw"}/${endpoint}`,
     }).then((response) => {
       callback(response.data)
+    })
+  },
+  generateImage: (endpoint, nsfw, text, callback) => {
+    Axios({
+      method: "post",
+      url: `/api/gen`,
+      responseType: 'arraybuffer',
+      data: {
+        endpoint: {
+          nsfw: nsfw,
+          type: endpoint,
+        },
+        text: {
+          top: text.top,
+          bottom: text.bottom,
+        },
+      },
+    }).then((response) => {
+      callback(response.data, null)
+    }).catch((err) => {
+      if (err.response.data) {
+        // Response on success sends arraybuffer, on fail sends text, convert buf to text
+        let errormsg = String.fromCharCode.apply(null, new Uint8Array(err.response.data))
+
+        return callback(null, JSON.parse(errormsg).message)
+      }
+      callback(null, "Image could not be generated")
     })
   },
 }

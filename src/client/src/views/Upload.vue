@@ -5,7 +5,7 @@
         <v-list-item three-line>
           <v-list-item-content>
             <v-list-item-title class="headline mb-1">Upload file</v-list-item-title>
-            <v-select v-model="endpoint" dense outlined label="Endpoint" :items="endpoints" @change="changeType"/>
+            <v-select v-model="endpoint" dense outlined label="Endpoint" :items="endpoints"/>
             <v-checkbox label="NSFW" v-model="nsfw" @change="update" style="margin-left: 10px;"/>
             <file-pond
               name="upload"
@@ -53,8 +53,10 @@ export default {
   },
   methods: {
     update: function () {
-      this.endpoints = (this.nsfw ? this.$store.getters.endpoints.nsfw : this.$store.getters.endpoints.sfw)
-      this.endpoint = this.endpoints[0]
+      api.getEndpoints((res, err) => {
+        this.endpoints = (this.nsfw ? res.nsfw : res.sfw)
+        this.endpoint = this.endpoints[0]
+      })
     },
     handleFilePondInitFile(item) {
       item.setMetadata("type", this.endpoint)

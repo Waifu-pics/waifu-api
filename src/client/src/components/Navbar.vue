@@ -63,6 +63,11 @@ export default {
         icon: "mdi-api",
       },
       {
+        title: "Generator",
+        link: "/gen",
+        icon: "mdi-image-edit",
+      },
+      {
         title: "Dashboard",
         link: "/admin",
         icon: "mdi-view-dashboard",

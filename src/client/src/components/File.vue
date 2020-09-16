@@ -45,7 +45,7 @@ export default {
         url: `/api/admin/${endpoint}`,
         data: {
           files: [
-            this.file,
+            this.file.name,
           ],
         },
       }).then((res) => {

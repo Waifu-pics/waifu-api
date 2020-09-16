@@ -24,7 +24,7 @@
           <v-tab>nsfw</v-tab>
           <v-tab-item>
             <v-list class="compact">
-              <v-list-item v-for="end in sfw" :key="end">
+              <v-list-item v-for="end in this.$store.getters.endpoints.sfw" :key="end">
                 <v-list-item-content>
                   <v-list-item-title>{{end}}</v-list-item-title>
                 </v-list-item-content>
@@ -33,7 +33,7 @@
           </v-tab-item>
           <v-tab-item>
             <v-list class="compact">
-              <v-list-item v-for="end in nsfw" :key="end">
+              <v-list-item v-for="end in this.$store.getters.endpoints.nsfw" :key="end">
                 <v-list-item-content>
                   <v-list-item-title>{{end}}</v-list-item-title>
                 </v-list-item-content>
@@ -110,17 +110,11 @@ export default {
   },
   data () {
     return {
-      nsfw: [],
-      sfw: [],
       examples: {
         one: JSON.parse(`{"url":"https://i.waifu.pics/Tj6Wzwo.png"}`),
         many: JSON.parse(`{"files": ["https://i.waifu.pics/qUY7BBo.jpg"]}`),
       },
     }
-  },
-  mounted: function () {
-    this.nsfw = this.$store.getters.endpoints.nsfw
-    this.sfw = this.$store.getters.endpoints.sfw
   },
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <Navbar></Navbar>
-    <v-main>
+    <v-main v-if="this.$store.getters.endpoints != undefined">
       <router-view/>
     </v-main>
   </v-app>
@@ -26,9 +26,8 @@ export default {
     Navbar,
   },
   created () {
-    this.$vuetify.theme.dark = true
-    // Preload
     this.$store.commit('endpoints')
+    this.$vuetify.theme.dark = true
   },
 }
 </script>

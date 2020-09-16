@@ -7,12 +7,12 @@
           <v-list-item-subtitle>Here are all the different pages you can explore.</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
-      <v-expansion-panels v-model="panel" multiple>
+      <v-expansion-panels multiple>
         <v-expansion-panel>
           <v-expansion-panel-header>SFW</v-expansion-panel-header>
           <v-expansion-panel-content>
             <v-list-item class="bottom">
-              <v-btn outlined v-for="endpoint in endpoints.sfw" :key="endpoint" :to="`/sfw/${endpoint}`" text>{{endpoint}}</v-btn>
+              <v-btn outlined v-for="endpoint in this.$store.getters.endpoints.sfw" :key="endpoint" :to="`/sfw/${endpoint}`" text>{{endpoint}}</v-btn>
             </v-list-item>
           </v-expansion-panel-content>
         </v-expansion-panel>
@@ -20,7 +20,7 @@
           <v-expansion-panel-header>NSFW</v-expansion-panel-header>
           <v-expansion-panel-content>
             <v-list-item class="bottom">
-              <v-btn outlined v-for="endpoint in endpoints.nsfw" :key="endpoint" :to="`/nsfw/${endpoint}`" text>{{endpoint}}</v-btn>
+              <v-btn outlined v-for="endpoint in this.$store.getters.endpoints.nsfw" :key="endpoint" :to="`/nsfw/${endpoint}`" text>{{endpoint}}</v-btn>
             </v-list-item>
           </v-expansion-panel-content>
         </v-expansion-panel>
@@ -51,17 +51,5 @@
 <script>
 export default {
   name: 'More',
-  data () {
-    return {
-      endpoints: {
-        sfw: {},
-        nsfw: {},
-      },
-    }
-  },
-  created () {
-    this.endpoints.sfw = this.$store.getters.endpoints.sfw
-    this.endpoints.nsfw = this.$store.getters.endpoints.nsfw
-  },
 }
 </script>

@@ -6,7 +6,7 @@
           <v-list-item-content>
             <v-text-field outlined dense v-model="query" label="Search"/>
             <v-checkbox style="margin-bottom:20px; margin-left:20px;" label="NSFW" v-model="nsfw" @change="update"/>
-            <v-select v-model="endpoint" dense outlined label="Endpoint" :items="endpoints" @change="changePoint"/>
+            <v-select v-model="endpoint" dense outlined label="Endpoint" :items="endpoints"/>
             <v-spacer/>
             <v-row justify="space-around">
               <v-checkbox label="Verified" class="vercheck" v-model="verbtn"/>
@@ -125,12 +125,8 @@ export default {
             })
           })
         }
-        
         this.res = query
       })
-    },
-    changePoint: function (newpoint) {
-      this.endpoint = newpoint
     },
     update: function () {
       this.endpoints = (this.nsfw ? this.$store.getters.endpoints.nsfw : this.$store.getters.endpoints.sfw)
