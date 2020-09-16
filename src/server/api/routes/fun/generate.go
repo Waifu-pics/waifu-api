@@ -21,6 +21,10 @@ func (i route) GenerateMeme(c echo.Context) error {
 		return c.JSON(400, api.Basic{Message: api.ErrInvalidJSON})
 	}
 
+	if len(body.Text.Bottom) > 30 || len(body.Text.Top) > 30 {
+		return c.JSON(500, api.Basic{Message: "Text is too long"})
+	}
+
 	fileget, err := i.Database.GetFiles(body.Endpoint.Type, body.Endpoint.Nsfw, nil, 1)
 	if err != nil || len(fileget) == 0 {
 		return c.JSON(500, api.Basic{Message: api.ErrServer})
@@ -33,7 +37,10 @@ func (i route) GenerateMeme(c echo.Context) error {
 	defer file.Body.Close()
 
 	buf := new(bytes.Buffer)
-	buf.ReadFrom(file.Body)
+	_, err = buf.ReadFrom(file.Body)
+	if err != nil {
+		return c.JSON(500, api.Basic{Message: api.ErrServer})
+	}
 
 	contentType := http.DetectContentType(buf.Bytes())
 
