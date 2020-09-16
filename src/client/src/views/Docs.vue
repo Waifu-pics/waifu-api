@@ -88,7 +88,7 @@
         </div>
         <v-divider></v-divider>
 
-        <div class="compact">
+        <!-- <div class="compact">
           <div class="tab">
             <h2 class="font-weight-light">Generate image</h2>
             <p>Generate a meme from a random image</p>
@@ -117,8 +117,7 @@
             <vue-json-pretty :data="examples.gen" />
           </div>
         </div>
-        <v-divider></v-divider>
-
+        <v-divider></v-divider> -->
       </div>
     </v-row>
   </v-container>

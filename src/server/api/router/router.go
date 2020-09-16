@@ -3,7 +3,6 @@ package router
 import (
 	"github.com/Riku32/waifu.pics/src/api"
 	"github.com/Riku32/waifu.pics/src/api/routes/admin"
-	"github.com/Riku32/waifu.pics/src/api/routes/fun"
 	"github.com/Riku32/waifu.pics/src/api/routes/image"
 	"github.com/Riku32/waifu.pics/src/api/routes/info"
 	"github.com/Riku32/waifu.pics/src/api/routes/upload"
@@ -28,7 +27,7 @@ func New(options api.Options) {
 	admin.NewRouter(options, api)
 	upload.NewRouter(options, api)
 	info.NewRouter(options, api)
-	fun.NewRouter(options, api)
+	//fun.NewRouter(options, api)
 
 	api.GET("/endpoints", func(c echo.Context) error {
 		return c.JSON(200, options.Config.Endpoints)

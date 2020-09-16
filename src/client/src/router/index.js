@@ -31,11 +31,11 @@ const routes = [
     name: 'Upload',
     component: Upload,
   },
-  {
-    path: '/gen',
-    name: 'Generator',
-    component: Gen,
-  },
+  // {
+  //   path: '/gen',
+  //   name: 'Generator',
+  //   component: Gen,
+  // },
   {
     path: '/admin/login',
     name: 'Login',
