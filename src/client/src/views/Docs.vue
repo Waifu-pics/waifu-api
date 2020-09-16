@@ -87,6 +87,38 @@
           <vue-json-pretty :data="examples.many" />
         </div>
         <v-divider></v-divider>
+
+        <div class="compact">
+          <div class="tab">
+            <h2 class="font-weight-light">Generate image</h2>
+            <p>Recieve 30 unique images from a specific endpoint or category</p>
+          </div>
+          <Apitable class="tab" type="POST">
+            https://waifu.pics/api/gen
+          </Apitable>
+          <div class="tab">
+            <Comment>This endpoint is ratelimited, you must only generate one image every two seconds</Comment>
+          </div>
+          <div class="tab">
+            <h3 class="font-weight-light">Fields</h3>
+            <p>Fields that can be sent to this endpoint</p>
+            <v-treeview
+              dense
+              :items="gentree"
+            ></v-treeview>
+          </div>
+          <div class="tab">
+            <h3 class="font-weight-light">Response</h3>
+            <p>This endpoint returns a buffer of the image</p>
+          </div>
+          <div class="tab">
+            <h3 class="font-weight-light">Request</h3>
+            <p>Here is an example request for this endpoint</p>
+            <vue-json-pretty :data="examples.gen" />
+          </div>
+        </div>
+        <v-divider></v-divider>
+
       </div>
     </v-row>
   </v-container>
@@ -113,7 +145,38 @@ export default {
       examples: {
         one: JSON.parse(`{"url":"https://i.waifu.pics/Tj6Wzwo.png"}`),
         many: JSON.parse(`{"files": ["https://i.waifu.pics/qUY7BBo.jpg"]}`),
+        gen: JSON.parse(`{"endpoint":{"type":"waifu","nsfw":false},"text":{"top":"Top Text","bottom":"Bottom Text"}}`),
       },
+      gentree: [
+        {
+          id: 1,
+          name: "endpoint",
+          children: [
+            {
+              id: 2, 
+              name: "type : string, image category",
+            },
+            {
+              id: 3, 
+              name: "nsfw : boolean, is image nsfw?",
+            },
+          ],
+        },
+        {
+          id: 4,
+          name: "text",
+          children: [
+            {
+              id: 5, 
+              name: "top : string, top text of image",
+            },
+            {
+              id: 6, 
+              name: "bottom : string, bottom text of image",
+            },
+          ],
+        },
+      ],
     }
   },
 }

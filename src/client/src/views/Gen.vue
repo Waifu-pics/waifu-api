@@ -39,6 +39,7 @@
 
 <script>
 import { api } from '@/functions/api.js'
+import * as imageType from 'image-type'
 
 export default {
   data () {
@@ -79,7 +80,7 @@ export default {
 
         let bytes = new Uint8Array(res)
         let binary = bytes.reduce((data, b) => data += String.fromCharCode(b), '')
-        this.buffer = "data:image/jpeg;base64," + btoa(binary)
+        this.buffer = `data:${imageType(bytes).mime};base64,` + btoa(binary)
 
         this.card.loading = false
       })
