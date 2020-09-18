@@ -29,7 +29,7 @@ func (i route) GetManyImage(c echo.Context) error {
 		list = append(list, strings.TrimPrefix(v, i.Options.Config.Web.Cdn))
 	}
 
-	filenames, err := i.Options.Database.GetFiles(i.Endpoint, i.Nsfw, body.Exclude, 30)
+	filenames, err := i.Options.Database.GetFiles(i.Endpoint, i.Nsfw, list, 30)
 	if err != nil || len(filenames) == 0 {
 		return c.JSON(400, api.Basic{Message: api.ErrServer})
 	}

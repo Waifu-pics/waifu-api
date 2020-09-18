@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -23,8 +22,6 @@ func main() {
 	flag.Parse()
 	static.Dev = *dev
 
-	mydir, _ := os.Getwd()
-	fmt.Println(mydir)
 	// Different structure for different modes
 	var cfg config.Config
 	if static.Dev {
