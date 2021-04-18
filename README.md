@@ -5,7 +5,6 @@
 
 
 <img src="https://www.codefactor.io/repository/github/Waifu-pics/api/badge/master">
-<img src="https://img.shields.io/github/workflow/status/Waifu-pics/api/Go?style=&color=blue">
 <img src="https://img.shields.io/github/license/Waifu-pics/api">
 <br>
 <h3><a href="https://waifu.pics">Website</a></h3>
