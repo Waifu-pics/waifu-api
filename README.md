@@ -1,7 +1,7 @@
 <div align=center>
 <img src="https://i.kawaii.sh/F5ae1I6.png">
 <h2>Waifu.pics</h2>
-<h3>User contributed waifu/anime picture database/API</h3>
+<h3>User contributed anime picture database/API</h3>
 
 
 <img src="https://www.codefactor.io/repository/github/Waifu-pics/api/badge/master">
