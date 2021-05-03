@@ -15,7 +15,7 @@ func New(options api.Options) {
 	e := echo.New()
 	e.Use(middleware.CORSWithConfig(middleware.DefaultCORSConfig))
 
-	api := e.Group("/api")
+	api := e.Group("") // Root URL for the API location
 	image.NewRouter(options, api)
 	admin.NewRouter(options, api)
 	upload.NewRouter(options, api)
