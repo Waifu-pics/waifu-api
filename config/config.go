@@ -29,8 +29,8 @@ type Storage struct {
 }
 
 type Endpoints struct {
-	Sfw  []string
-	Nsfw []string
+	Sfw  []string `json:"sfw"`
+	Nsfw []string `json:"nsfw"`
 }
 
 // LoadConfig : Load config from env
