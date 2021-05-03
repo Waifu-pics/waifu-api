@@ -56,6 +56,7 @@ func (i Route) Login(c echo.Context) error {
 		Value:   string(jwtoken),
 		Expires: time.Now().Add(60 * time.Minute),
 		Path:    "/",
+		Domain:  "waifu.pics",
 	}
 
 	c.SetCookie(&cookie)
