@@ -1,12 +1,15 @@
 package router
 
 import (
+	"net/http"
+
 	"github.com/Waifu-pics/waifu-api/api"
 	"github.com/Waifu-pics/waifu-api/api/routes/admin"
 	"github.com/Waifu-pics/waifu-api/api/routes/image"
 	"github.com/Waifu-pics/waifu-api/api/routes/info"
 	"github.com/Waifu-pics/waifu-api/api/routes/upload"
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 )
 
 // New : initialize router
@@ -14,14 +17,11 @@ func New(options api.Options) {
 	e := echo.New()
 
 	api := e.Group("") // Root URL for the API location
-	api.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
-		return func(ctx echo.Context) error {
-			ctx.Response().Header().Set("Access-Control-Allow-Origin", "*")
-			ctx.Response().Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-			ctx.Response().Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
-			return next(ctx)
-		}
-	})
+	api.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		Skipper:      middleware.DefaultSkipper,
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete, http.MethodOptions},
+	}))
 
 	image.NewRouter(options, api)
 	admin.NewRouter(options, api)
