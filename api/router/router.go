@@ -17,9 +17,9 @@ func New(options api.Options) {
 	e := echo.New()
 
 	api := e.Group("") // Root URL for the API location
-	api.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		Skipper:      middleware.DefaultSkipper,
-		AllowOrigins: []string{"*"},
+		AllowOrigins: []string{"https://waifu.pics"},
 		AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete, http.MethodOptions},
 	}))
 
