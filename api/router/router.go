@@ -13,9 +13,10 @@ import (
 // New : initialize router
 func New(options api.Options) {
 	e := echo.New()
-	e.Use(middleware.CORSWithConfig(middleware.DefaultCORSConfig))
 
 	api := e.Group("") // Root URL for the API location
+	api.Use(middleware.CORSWithConfig(middleware.DefaultCORSConfig))
+
 	image.NewRouter(options, api)
 	admin.NewRouter(options, api)
 	upload.NewRouter(options, api)
