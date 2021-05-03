@@ -13,6 +13,8 @@ type Config struct {
 	DatabaseUrl string
 	Storage     Storage
 	Endpoints   Endpoints
+	Domain      string
+	Frontend    string
 }
 
 type Web struct {
@@ -53,6 +55,8 @@ func LoadConfig() Config {
 			Sfw:  strings.Split(getEnv("ENDPOINTS_SFW"), ","),
 			Nsfw: strings.Split(getEnv("ENDPOINTS_NSFW"), ","),
 		},
+		Domain:   getEnv("DOMAIN"),
+		Frontend: getEnv("FRONTEND_URL"),
 	}
 }
 
