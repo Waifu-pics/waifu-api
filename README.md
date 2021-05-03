@@ -1,4 +1,4 @@
-<img align=center src="https://raw.githubusercontent.com/Waifu-pics/waifu-api/.github/assets/banner.png">
+<img align=center src="https://raw.githubusercontent.com/Waifu-pics/waifu-api/master/.github/assets/banner.png">
 
 ## Waifu.pics
 Waifu.pics is a user contributed anime picture database/API. This allows anyone to upload an image to the API. This image will require admin approval and not immediately available
