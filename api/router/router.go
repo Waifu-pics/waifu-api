@@ -19,7 +19,7 @@ func New(options api.Options) {
 	api := e.Group("") // Root URL for the API location
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		Skipper:          middleware.DefaultSkipper,
-		AllowOrigins:     []string{options.Config.Frontend},
+		AllowOrigins:     []string{options.Config.Frontend, "*"},
 		AllowMethods:     []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete, http.MethodOptions},
 		AllowCredentials: true,
 	}))
