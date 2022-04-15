@@ -7,4 +7,4 @@ Waifu.pics is a user contributed anime picture database/API. This allows anyone 
 <img src="https://img.shields.io/github/license/Waifu-pics/api">
 
 ### Contributing
-Make sure to push to the `master` branch when contributing or making a pull request
+Make sure to push to the `master` branch when contributing or making a pull request, not `production`

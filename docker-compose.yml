@@ -1,6 +1,0 @@
-version: '3'
-services:
-  waifu:
-    build: .
-    ports:
-    - "5000:8080"
