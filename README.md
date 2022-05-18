@@ -8,3 +8,8 @@ Waifu.pics is a user contributed anime picture database/API. This allows anyone 
 
 ### Contributing
 Make sure to push to the `master` branch when contributing or making a pull request
+
+Api wrappers
+=======
+
+[Python](https://github.com/Okimii/pykawaii)
