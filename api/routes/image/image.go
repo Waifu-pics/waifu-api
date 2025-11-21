@@ -1,6 +1,7 @@
 package image
 
 import (
+	"strconv"
 	"strings"
 
 	"github.com/Waifu-pics/waifu-api/api"
@@ -29,7 +30,16 @@ func (i route) GetManyImage(c echo.Context) error {
 		list = append(list, strings.TrimPrefix(v, i.Options.Config.Web.Cdn))
 	}
 
-	filenames, err := i.Options.Database.GetFiles(i.Endpoint, i.Nsfw, list, 30)
+	limitStr := c.QueryParam("limit")
+	if limitStr == "" {
+		limitStr = "30"
+	}
+	limit, err := strconv.Atoi(limitStr)
+	if err != nil || limit < 1 || limit > 30 {
+		return c.JSON(400, api.Basic{Message: api.ErrInvalidLimit})
+	}
+
+	filenames, err := i.Options.Database.GetFiles(i.Endpoint, i.Nsfw, list, limit)
 	if err != nil || len(filenames) == 0 {
 		return c.JSON(400, api.Basic{Message: api.ErrServer})
 	}
